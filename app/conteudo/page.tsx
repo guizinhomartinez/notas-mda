@@ -7,7 +7,7 @@ export default async function Conteudo() {
     const { isAuthenticated } = await auth();
 
     return (
-        <div className="from-background mx-auto flex h-screen w-screen flex-col items-center justify-center gap-4 bg-gradient-to-b to-zinc-400/5">
+        <div className="from-background mx-auto flex h-dvh w-screen flex-col items-center justify-center gap-4 bg-gradient-to-b to-zinc-400/5">
             {isAuthenticated ? (
                 <div className="flex flex-col items-center justify-center gap-3">
                     <SignedInContent />

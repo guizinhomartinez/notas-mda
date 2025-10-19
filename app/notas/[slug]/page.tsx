@@ -96,8 +96,11 @@ export default async function Notas({
     const nextActualDate = new Date();
     nextActualDate.setDate(actualDate.getDate() + 1);
 
+    actualDate.setHours(0, 0, 0, 0);
+    nextActualDate.setHours(0, 0, 0, 0);
+
     return (
-        <div className="from-background flex h-screen w-screen flex-col items-center justify-center gap-4 bg-gradient-to-b to-zinc-400/5 lg:mx-auto">
+        <div className="from-background flex h-dvh w-screen flex-col items-center justify-center gap-4 bg-gradient-to-b to-zinc-400/5 lg:mx-auto">
             <SlugComponent
                 {...{
                     userData,

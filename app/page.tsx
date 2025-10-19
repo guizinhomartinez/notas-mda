@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Home() {
     return (
-        <div className="from-background flex h-screen max-h-screen w-screen flex-col items-center justify-center gap-24 bg-gradient-to-b to-zinc-400/5 p-8">
+        <div className="from-background flex h-dvh max-h-dvh w-screen flex-col items-center justify-center gap-24 bg-gradient-to-b to-zinc-400/5 p-8">
             <div className="flex flex-col items-center justify-center gap-3">
                 <h1 className="bg-gradient-to-b from-zinc-400 to-zinc-700 bg-clip-text text-center text-7xl font-bold text-transparent dark:bg-gradient-to-t dark:!from-transparent dark:to-zinc-400">
                     Notas do M.D.A.

@@ -15,7 +15,7 @@ export default async function NotasCalendario() {
     );
 
     return (
-        <ScrollAreaDemo className="from-background flex h-screen w-screen items-center gap-4 bg-gradient-to-b to-zinc-400/5 lg:mx-auto">
+        <ScrollAreaDemo className="from-background flex h-dvh w-screen items-center gap-4 bg-gradient-to-b to-zinc-400/5 lg:mx-auto">
             <CalendarioPageContent date={date} averages={averages} />
         </ScrollAreaDemo>
     );
