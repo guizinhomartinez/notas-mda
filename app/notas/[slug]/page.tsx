@@ -72,7 +72,7 @@ export default async function Notas({
         }),
     );
 
-    const average = await getDayAverage(new Date(2000 + year, month - 1, day));
+    const average = await getDayAverage(new Date(2000 + year, month - 1, day - 1));
 
     if (checkedRatings?.ratings.length === 0) pageNotFound = true;
 

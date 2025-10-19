@@ -164,11 +164,24 @@ export async function editRatingOfSpecificDay(
 }
 
 export async function checkAllRatings(customDate: Date) {
-    const startDay = new Date(customDate);
-    startDay.setHours(0, 0, 0, 0);
-
-    const endDay = new Date(customDate);
-    endDay.setHours(23, 59, 59, 999);
+    const startDay = new Date(
+        customDate.getFullYear(),
+        customDate.getMonth(),
+        customDate.getDate(),
+        0,
+        0,
+        0,
+        0,
+    );
+    const endDay = new Date(
+        customDate.getFullYear(),
+        customDate.getMonth(),
+        customDate.getDate(),
+        23,
+        59,
+        59,
+        999,
+    );
 
     const result = await prisma.rating.findMany({
         where: {
@@ -181,17 +194,16 @@ export async function checkAllRatings(customDate: Date) {
     });
 
     return {
-        ratings: result.map((rating) => rating.value),
-        userId: result.map((rating) => rating.clerkId),
+        ratings: result.map((r) => r.value),
+        userId: result.map((r) => r.clerkId),
     };
 }
 
 export async function getDayAverage(date: Date) {
     const checkedRatings = await checkAllRatings(date);
 
-    const average =
-        checkedRatings?.ratings.reduce((sum, val) => sum + val, 0) /
-        checkedRatings?.ratings.length;
+    if (!checkedRatings?.ratings.length) return 0;
 
-    return average;
+    const total = checkedRatings.ratings.reduce((sum, val) => sum + val, 0);
+    return total / checkedRatings.ratings.length;
 }
