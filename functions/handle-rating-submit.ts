@@ -3,10 +3,31 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-const startOfDay = new Date();
-startOfDay.setHours(0, 0, 0, 0);
-const endOfDay = new Date();
-endOfDay.setHours(23, 59, 59, 999);
+function getUTCDayRange(date: Date) {
+    const start = new Date(
+        Date.UTC(
+            date.getUTCFullYear(),
+            date.getUTCMonth(),
+            date.getUTCDate(),
+            0,
+            0,
+            0,
+            0,
+        ),
+    );
+    const end = new Date(
+        Date.UTC(
+            date.getUTCFullYear(),
+            date.getUTCMonth(),
+            date.getUTCDate(),
+            23,
+            59,
+            59,
+            999,
+        ),
+    );
+    return { start, end };
+}
 
 export async function sendRating(
     userId: string | null,
@@ -15,27 +36,26 @@ export async function sendRating(
 ) {
     if (!userId) throw new Error("No user ID provided");
 
-    // Check if user already rated today
+    const now = new Date();
+    const { start, end } = getUTCDayRange(now);
+
     const existingRating = await prisma.rating.findFirst({
         where: {
             clerkId: userId,
             date: {
-                gte: startOfDay,
-                lte: endOfDay,
+                gte: start,
+                lte: end,
             },
         },
     });
 
-    if (existingRating) {
-        return { alreadyRated: true };
-    }
+    if (existingRating) return { alreadyRated: true };
 
-    // If not, create a new one
     await prisma.rating.create({
         data: {
             value: Number(firstValue) + Number(secondValue) / 10,
             clerkId: userId,
-            date: new Date(),
+            date: new Date(now.toISOString()), // Ensures UTC
         },
     });
 
@@ -50,49 +70,40 @@ export async function sendRatingOfSpecifcDay(
 ) {
     if (!userId) throw new Error("No user ID provided");
 
-    const startDay = new Date(customDate);
-    startDay.setHours(0, 0, 0, 0);
+    const { start, end } = getUTCDayRange(customDate);
 
-    const endDay = new Date(customDate);
-    endDay.setHours(23, 59, 59, 999);
-
-    // Check if user already rated
     const existingRating = await prisma.rating.findFirst({
         where: {
             clerkId: userId,
             date: {
-                gte: startDay,
-                lte: endDay,
+                gte: start,
+                lte: end,
             },
         },
     });
 
-    if (existingRating) {
-        return { alreadyRated: true };
-    }
+    if (existingRating) return { alreadyRated: true };
 
-    // If not, create a new one
     await prisma.rating.create({
         data: {
             value: Number(firstValue) + Number(secondValue) / 10,
             clerkId: userId,
-            date: customDate,
+            date: new Date(customDate.toISOString()), // Force UTC
         },
     });
 
     return { success: true };
 }
 
-export async function checkUserRating(userId: string | null) {
+export async function checkUserRating(userId: string | null, customDate: Date) {
     if (!userId) return { ratedToday: false };
+
+    const { start, end } = getUTCDayRange(customDate);
 
     const existingRating = await prisma.rating.findFirst({
         where: {
             clerkId: userId,
-            date: {
-                gte: startOfDay,
-                lte: endOfDay,
-            },
+            date: { gte: start, lte: end },
         },
     });
 
@@ -103,20 +114,20 @@ export async function editRating(
     userId: string | null,
     newFirstValue: string,
     newSecondValue: string,
+    customDate: Date,
 ) {
     if (!userId) return { success: false };
+
+    const { start, end } = getUTCDayRange(customDate);
 
     await prisma.rating.updateMany({
         where: {
             clerkId: userId,
-            date: {
-                gte: startOfDay,
-                lte: endOfDay,
-            },
+            date: { gte: start, lte: end },
         },
         data: {
             value: Number(newFirstValue) + Number(newSecondValue) / 10,
-            date: new Date(),
+            date: new Date(customDate.toISOString()),
         },
     });
 
@@ -135,23 +146,16 @@ export async function editRatingOfSpecificDay(
 ) {
     if (!userId) return { success: false };
 
-    const startDay = new Date(customDate);
-    startDay.setHours(0, 0, 0, 0);
-
-    const endDay = new Date(customDate);
-    endDay.setHours(23, 59, 59, 999);
+    const { start, end } = getUTCDayRange(customDate);
 
     await prisma.rating.updateMany({
         where: {
             clerkId: userId,
-            date: {
-                gte: startDay,
-                lte: endDay,
-            },
+            date: { gte: start, lte: end },
         },
         data: {
             value: Number(newFirstValue) + Number(newSecondValue) / 10,
-            date: customDate,
+            date: new Date(customDate.toISOString()),
         },
     });
 
@@ -164,31 +168,11 @@ export async function editRatingOfSpecificDay(
 }
 
 export async function checkAllRatings(customDate: Date) {
-    const startDay = new Date(
-        customDate.getFullYear(),
-        customDate.getMonth(),
-        customDate.getDate(),
-        0,
-        0,
-        0,
-        0,
-    );
-    const endDay = new Date(
-        customDate.getFullYear(),
-        customDate.getMonth(),
-        customDate.getDate(),
-        23,
-        59,
-        59,
-        999,
-    );
+    const { start, end } = getUTCDayRange(customDate);
 
     const result = await prisma.rating.findMany({
         where: {
-            date: {
-                gte: startDay,
-                lte: endDay,
-            },
+            date: { gte: start, lte: end },
         },
         orderBy: { value: "desc" },
     });
@@ -201,7 +185,6 @@ export async function checkAllRatings(customDate: Date) {
 
 export async function getDayAverage(date: Date) {
     const checkedRatings = await checkAllRatings(date);
-
     if (!checkedRatings?.ratings.length) return 0;
 
     const total = checkedRatings.ratings.reduce((sum, val) => sum + val, 0);

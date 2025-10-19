@@ -197,12 +197,12 @@ export default function SlugComponent({
                         href={formatDateUTC(nextDay, true)}
                         className="w-full *:w-full"
                         onClick={(e) => {
-                            if (actualDate > nextActualDate) e.preventDefault();
+                            if (actualDate.getTime() > nextActualDate.getTime()) e.preventDefault();
                         }}
                     >
                         <Button
                             variant="secondary"
-                            disabled={actualDate > nextActualDate}
+                            disabled={actualDate.getTime() > nextActualDate.getTime()}
                         >
                             {formatDateUTC(nextDay)}
                             <ChevronRight />

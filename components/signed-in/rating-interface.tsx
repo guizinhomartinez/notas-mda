@@ -10,7 +10,13 @@ import RatingForm from "./rating-form";
 import { Spinner } from "../ui/spinner";
 import EditRatingUI from "./edit-rating";
 
-export default function RatingInterface({ userId }: { userId: string | null }) {
+export default function RatingInterface({
+    userId,
+    date,
+}: {
+    userId: string | null;
+    date: Date;
+}) {
     const [firstValue, setFirstValue] = useState("0");
     const [secondValue, setSecondValue] = useState("0");
     const [newValues, setNewValues] = useState<string[]>(["0", "0"]);
@@ -41,7 +47,7 @@ export default function RatingInterface({ userId }: { userId: string | null }) {
     async function editRatingButton() {
         setLoadingEditMenu(true);
         try {
-            const result = await editRating(userId, newValues[0], newValues[1]);
+            const result = await editRating(userId, newValues[0], newValues[1], date);
 
             if (result?.success) {
                 setOpenEditMenu(false);
@@ -57,7 +63,7 @@ export default function RatingInterface({ userId }: { userId: string | null }) {
 
     useEffect(() => {
         async function checkIfUserRated() {
-            const result = await checkUserRating(userId);
+            const result = await checkUserRating(userId, date);
             if (result?.ratedToday) setSentRating(true);
             else setSentRating(false);
             setRatedValue(result.ratedValue);

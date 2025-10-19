@@ -109,7 +109,7 @@ export default function RatingPopup({
         return (
             <Drawer open={openEditMenu} onOpenChange={setOpenEditMenu}>
                 <DrawerTrigger asChild>
-                    {children ? children : <Button>Nova nota</Button>}
+                    {children ? children : <Button>Editar nota</Button>}
                 </DrawerTrigger>
                 <DrawerContent className="!rounded-t-xl">
                     <DrawerHeader>
@@ -135,7 +135,7 @@ export default function RatingPopup({
     return (
         <Dialog open={openEditMenu} onOpenChange={setOpenEditMenu}>
             <DialogTrigger asChild>
-                {children ? children : <Button>Nova nota</Button>}
+                {children ? children : <Button>Editar nota</Button>}
             </DialogTrigger>
             <DialogContent className="max-h-[98vh] rounded-xl">
                 <DialogHeader className="-mt-2">

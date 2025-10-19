@@ -5,10 +5,11 @@ import { auth } from "@clerk/nextjs/server";
 
 export default async function SignedInContent() {
     const { userId } = await auth();
+    const date = new Date();
 
     return (
         <div className="flex flex-col items-center justify-center gap-3">
-            <RatingInterface {...{userId}} />
+            <RatingInterface {...{userId, date}} />
         </div>
     );
 }

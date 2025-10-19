@@ -41,30 +41,23 @@ export default async function Notas({
     const { slug } = await params;
     const { userId } = await auth();
 
-    let pageNotFound = false;
-
     const regex = /^\d{2}-\d{2}-\d{2}$/;
-    if (!regex.test(slug)) {
-        return notFound();
-    }
+    if (!regex.test(slug)) return notFound();
 
     const [day, month, year] = slug.split("-").map(Number);
     const correctedDate = new Date(Date.UTC(2000 + year, month - 1, day));
-    const previousDay = new Date(correctedDate);
-    previousDay.setUTCDate(correctedDate.getUTCDate() - 1);
-
-    const nextDay = new Date(correctedDate);
-    nextDay.setUTCDate(correctedDate.getUTCDate() + 1);
+    const previousDay = new Date(Date.UTC(2000 + year, month - 1, day - 1));
+    const nextDay = new Date(Date.UTC(2000 + year, month - 1, day + 1));
 
     const checkedRatings = await checkAllRatings(correctedDate);
     const userData = await Promise.all(
-        checkedRatings.userId.map(async (userId, index) => {
+        checkedRatings.userId.map(async (uid, index) => {
             const [username, profilePicture] = await Promise.all([
-                getUsernameByUserId(userId),
-                getProfilePhotoByUserId(userId),
+                getUsernameByUserId(uid),
+                getProfilePhotoByUserId(uid),
             ]);
             return {
-                userId: userId,
+                userId: uid,
                 username,
                 profilePicture,
                 rating: checkedRatings.ratings[index],
@@ -72,32 +65,30 @@ export default async function Notas({
         }),
     );
 
-    const average = await getDayAverage(new Date(2000 + year, month - 1, day - 1));
-
-    if (checkedRatings?.ratings.length === 0) pageNotFound = true;
+    const average = await getDayAverage(correctedDate);
+    const pageNotFound = checkedRatings?.ratings.length === 0;
 
     const checkIfDayHasRating = async () => {
         "use server";
-
         if (!userId) return { hasRating: false, success: false };
 
         const result =
             (await prisma.rating.count({
-                where: {
-                    date: correctedDate,
-                    clerkId: userId,
-                },
+                where: { clerkId: userId, date: correctedDate },
             })) > 0;
-        return { hasRating: result ?? null, success: true };
+        return { hasRating: result, success: true };
     };
 
     const username = await getUsernameByUserId(userId);
     const actualDate = new Date();
-    const nextActualDate = new Date();
-    nextActualDate.setDate(actualDate.getDate() + 1);
+    const nextActualDate = new Date(Date.UTC(
+        actualDate.getUTCFullYear(),
+        actualDate.getUTCMonth(),
+        actualDate.getUTCDate() + 1,
+    ));
 
-    actualDate.setHours(0, 0, 0, 0);
-    nextActualDate.setHours(0, 0, 0, 0);
+    actualDate.setUTCHours(0, 0, 0, 0);
+    nextActualDate.setUTCHours(0, 0, 0, 0);
 
     return (
         <div className="from-background flex h-dvh w-screen flex-col items-center justify-center gap-4 bg-gradient-to-b to-zinc-400/5 lg:mx-auto">
