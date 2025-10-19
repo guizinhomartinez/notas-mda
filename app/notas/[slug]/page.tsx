@@ -49,12 +49,12 @@ export default async function Notas({
     }
 
     const [day, month, year] = slug.split("-").map(Number);
-    const correctedDate = new Date(2000 + year, month - 1, day);
+    const correctedDate = new Date(Date.UTC(2000 + year, month - 1, day));
     const previousDay = new Date(correctedDate);
-    previousDay.setDate(correctedDate.getDate() - 1);
+    previousDay.setUTCDate(correctedDate.getUTCDate() - 1);
 
     const nextDay = new Date(correctedDate);
-    nextDay.setDate(correctedDate.getDate() + 1);
+    nextDay.setUTCDate(correctedDate.getUTCDate() + 1);
 
     const checkedRatings = await checkAllRatings(correctedDate);
     const userData = await Promise.all(
@@ -79,7 +79,7 @@ export default async function Notas({
     const checkIfDayHasRating = async () => {
         "use server";
 
-        if (!userId) return {hasRating: false, success: false }
+        if (!userId) return { hasRating: false, success: false };
 
         const result =
             (await prisma.rating.count({
@@ -112,7 +112,7 @@ export default async function Notas({
                     username,
                     actualDate,
                     nextActualDate,
-                    slug
+                    slug,
                 }}
             />
         </div>
