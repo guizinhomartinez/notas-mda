@@ -33,12 +33,13 @@ export default function SlugComponent({
     const [openEditMenu, setOpenEditMenu] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
 
-    function formatDate(date: Date, linkFormatting?: boolean): string {
-        const d = date.getDate().toString().padStart(2, "0");
-        const m = (date.getMonth() + 1).toString().padStart(2, "0");
-        const y = (date.getFullYear() % 100).toString().padStart(2, "0");
+    function formatDateUTC(date: Date, linkFormatting?: boolean): string {
+        const d = date.getUTCDate().toString().padStart(2, "0");
+        const m = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+        const y = (date.getUTCFullYear() % 100).toString().padStart(2, "0");
+
         if (linkFormatting) return `${d}-${m}-${y}`;
-        else return `${d}/${m}`;
+        return `${d}/${m}`;
     }
 
     async function sendRatingButtonFromAnotherDay() {
@@ -86,7 +87,7 @@ export default function SlugComponent({
         <>
             <div className="lg:bg-primary-foreground lg:border-border flex min-h-full min-w-full flex-col justify-center gap-7 rounded-xl border p-6 lg:min-h-0 lg:min-w-96">
                 <p className="text-center text-2xl font-bold tracking-tight">
-                    {formatDate(correctedDate)}
+                    {formatDateUTC(correctedDate)}
                 </p>
                 {!pageNotFound ? (
                     <>
@@ -183,17 +184,17 @@ export default function SlugComponent({
 
                 <div className="absolute bottom-4 left-1/2 flex w-[calc(100vw-3rem)] -translate-x-1/2 items-center justify-center gap-2 *:flex-1 md:w-[calc(50vw)] lg:relative lg:bottom-0 lg:left-0 lg:w-full lg:translate-x-0">
                     <Link
-                        href={formatDate(previousDay, true)}
+                        href={formatDateUTC(previousDay, true)}
                         className="w-full *:w-full"
                     >
                         <Button variant="secondary">
                             <ChevronLeft />
-                            {formatDate(previousDay)}
+                            {formatDateUTC(previousDay)}
                         </Button>
                     </Link>
 
                     <Link
-                        href={formatDate(nextDay, true)}
+                        href={formatDateUTC(nextDay, true)}
                         className="w-full *:w-full"
                         onClick={(e) => {
                             if (actualDate > nextActualDate) e.preventDefault();
@@ -203,7 +204,7 @@ export default function SlugComponent({
                             variant="secondary"
                             disabled={actualDate > nextActualDate}
                         >
-                            {formatDate(nextDay)}
+                            {formatDateUTC(nextDay)}
                             <ChevronRight />
                         </Button>
                     </Link>
