@@ -104,7 +104,7 @@ export default function RatingForm({
                     <DrawerTrigger asChild>
                         <Button className="w-48">Confirmar</Button>
                     </DrawerTrigger>
-                    <DrawerContent className="!rounded-t-3xl">
+                    <DrawerContent className="!rounded-t-xl">
                         <DrawerHeader>
                             <DrawerTitle className="text-2xl font-bold tracking-tight">
                                 Tem certeza?
@@ -129,7 +129,7 @@ export default function RatingForm({
                             </Button>
                             <DrawerClose asChild>
                                 <Button
-                                    className="rounded-full p-3"
+                                    className="p-3"
                                     variant="outline"
                                     disabled={loading}
                                 >
