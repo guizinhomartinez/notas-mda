@@ -14,7 +14,7 @@ import {
 } from "@/functions/handle-rating-submit";
 import { ChevronLeft, ChevronRight, Edit } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function SlugComponent({
     userData,
@@ -28,8 +28,13 @@ export default function SlugComponent({
     actualDate,
     nextActualDate,
     slug,
+    userRated,
 }: SlugComponentInterface) {
     const [newValues, setNewValues] = useState<string[]>(["0", "0"]);
+    const [newValuesAnotherDay, setNewValuesAnotherDay] = useState<string[]>([
+        "0",
+        "0",
+    ]);
     const [openEditMenu, setOpenEditMenu] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
 
@@ -65,6 +70,8 @@ export default function SlugComponent({
     }
 
     async function editRatingFromAnotherDay() {
+        setIsUpdating(true);
+
         try {
             const result = await editRatingOfSpecificDay(
                 userId,
@@ -80,6 +87,8 @@ export default function SlugComponent({
         } catch (e) {
             console.error(e);
             alert("Algo deu errado");
+        } finally {
+            setIsUpdating(false);
         }
     }
 
@@ -143,7 +152,7 @@ export default function SlugComponent({
                                                             ) : (
                                                                 user.rating
                                                             )}
-                                                            <Edit className="" />
+                                                            <Edit />
                                                         </Button>
                                                     </RatingPopup>
                                                 ) : (
@@ -182,32 +191,64 @@ export default function SlugComponent({
                     </>
                 )}
 
-                <div className="absolute bottom-4 left-1/2 flex w-[calc(100vw-3rem)] -translate-x-1/2 items-center justify-center gap-2 *:flex-1 md:w-[calc(50vw)] lg:relative lg:bottom-0 lg:left-0 lg:w-full lg:translate-x-0">
-                    <Link
-                        href={formatDateUTC(previousDay, true)}
-                        className="w-full *:w-full"
-                    >
-                        <Button variant="secondary">
-                            <ChevronLeft />
-                            {formatDateUTC(previousDay)}
-                        </Button>
-                    </Link>
+                <div className="absolute bottom-4 left-1/2 w-[calc(100vw-3rem)] -translate-x-1/2 md:w-[calc(50vw)] lg:relative lg:bottom-0 lg:left-0 lg:w-full lg:translate-x-0">
+                    <div className="flex flex-col items-center justify-center gap-3 *:flex-grow">
+                        {userRated ||
+                            (!pageNotFound && (
+                                <RatingPopup
+                                    {...{
+                                        openEditMenu,
+                                        setOpenEditMenu,
+                                        isUpdating,
+                                    }}
+                                    newValues={newValuesAnotherDay}
+                                    setNewValues={setNewValuesAnotherDay}
+                                    actionType="edit"
+                                    editRatingButton={editRatingFromAnotherDay}
+                                >
+                                    <Button
+                                        className="w-full"
+                                        onClick={sendRatingButtonFromAnotherDay}
+                                    >
+                                        Adicionar nota
+                                    </Button>
+                                </RatingPopup>
+                            ))}
+                        <div className="flex w-full items-center justify-center gap-2">
+                            <Link
+                                href={formatDateUTC(previousDay, true)}
+                                className="w-full *:w-full"
+                            >
+                                <Button variant="secondary">
+                                    <ChevronLeft />
+                                    {formatDateUTC(previousDay)}
+                                </Button>
+                            </Link>
 
-                    <Link
-                        href={formatDateUTC(nextDay, true)}
-                        className="w-full *:w-full"
-                        onClick={(e) => {
-                            if (actualDate.getTime() > nextActualDate.getTime()) e.preventDefault();
-                        }}
-                    >
-                        <Button
-                            variant="secondary"
-                            disabled={actualDate.getTime() > nextActualDate.getTime()}
-                        >
-                            {formatDateUTC(nextDay)}
-                            <ChevronRight />
-                        </Button>
-                    </Link>
+                            <Link
+                                href={formatDateUTC(nextDay, true)}
+                                className="w-full *:w-full"
+                                onClick={(e) => {
+                                    if (
+                                        actualDate.getTime() >
+                                        nextActualDate.getTime()
+                                    )
+                                        e.preventDefault();
+                                }}
+                            >
+                                <Button
+                                    variant="secondary"
+                                    disabled={
+                                        actualDate.getTime() >
+                                        nextActualDate.getTime()
+                                    }
+                                >
+                                    {formatDateUTC(nextDay)}
+                                    <ChevronRight />
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

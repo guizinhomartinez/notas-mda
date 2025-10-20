@@ -6,6 +6,7 @@ import {
 } from "@/functions/clerk-handling";
 import {
     checkAllRatings,
+    checkUserRating,
     getDayAverage,
 } from "@/functions/handle-rating-submit";
 import prisma from "@/lib/prisma";
@@ -31,6 +32,7 @@ export interface SlugComponentInterface {
     actualDate: Date;
     nextActualDate: Date;
     slug: string;
+    userRated: boolean;
 }
 
 export default async function Notas({
@@ -90,6 +92,8 @@ export default async function Notas({
     actualDate.setUTCHours(0, 0, 0, 0);
     nextActualDate.setUTCHours(0, 0, 0, 0);
 
+    const userRated = (await checkUserRating(userId, correctedDate)).ratedToday;
+
     return (
         <div className="from-background flex h-dvh w-screen flex-col items-center justify-center gap-4 bg-gradient-to-b to-zinc-400/5 lg:mx-auto">
             <SlugComponent
@@ -107,6 +111,7 @@ export default async function Notas({
                     actualDate,
                     nextActualDate,
                     slug,
+                    userRated
                 }}
             />
         </div>
