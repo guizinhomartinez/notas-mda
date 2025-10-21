@@ -99,6 +99,9 @@ export async function sendRatingOfSpecifcDay(
 export async function checkUserRating(userId: string | null, customDate: Date) {
     if (!userId) return { ratedToday: false };
 
+    const date = customDate;
+    date.setHours(customDate.getHours() - 3);
+
     const { start, end } = getUTCDayRange(customDate);
 
     const existingRating = await prisma.rating.findFirst({
