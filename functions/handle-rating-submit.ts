@@ -68,6 +68,7 @@ export async function sendRatingOfSpecifcDay(
     firstValue: string,
     secondValue: string,
     customDate: Date,
+    pathToRevalidate?: string,
 ) {
     if (!userId) throw new Error("No user ID provided");
 
@@ -93,21 +94,33 @@ export async function sendRatingOfSpecifcDay(
         },
     });
 
+    if (pathToRevalidate) revalidatePath(pathToRevalidate);
+
     return { success: true };
 }
 
 export async function checkUserRating(userId: string | null, customDate: Date) {
     if (!userId) return { ratedToday: false };
 
-    const date = customDate;
-    date.setHours(customDate.getHours() - 3);
+    const dateUTC = new Date(
+        Date.UTC(
+            customDate.getUTCFullYear(),
+            customDate.getUTCMonth(),
+            customDate.getUTCDate(),
+        ),
+    );
 
-    const { start, end } = getUTCDayRange(customDate);
+    const start = dateUTC;
+    const end = new Date(dateUTC);
+    end.setUTCDate(dateUTC.getUTCDate() + 1);
 
     const existingRating = await prisma.rating.findFirst({
         where: {
             clerkId: userId,
-            date: { gte: start, lte: end },
+            date: {
+                gte: start,
+                lt: end,
+            },
         },
     });
 

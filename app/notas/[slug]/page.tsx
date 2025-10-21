@@ -1,6 +1,7 @@
 import NotFound from "@/components/notas-components/not-found";
 import SlugComponent from "@/components/notas-components/slug-component";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
     getProfilePhotoByUserId,
     getUsernameByUserId,
@@ -14,6 +15,7 @@ import prisma from "@/lib/prisma";
 import { SignInButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 export interface SlugComponentInterface {
     userData: {
@@ -22,11 +24,11 @@ export interface SlugComponentInterface {
         profilePicture: string | null;
         rating: number;
     }[];
-    correctedDate: Date;
+    correctedDate: string;
     userId: string | null;
     average: number;
-    previousDay: Date;
-    nextDay: Date;
+    previousDay: string;
+    nextDay: string;
     checkedRatings?: { ratings: number[]; userId: string[] };
     ratingsAreNotAvailable: boolean;
     checkIfDayHasRating: () => void;
@@ -40,10 +42,10 @@ export interface SlugComponentInterface {
 export default async function Notas({
     params,
 }: {
-    params: Promise<{ slug: string }>;
+    params: { slug: string };
 }) {
-    const { slug } = await params;
-    const { userId } = await auth();
+    const { slug } = params;
+    const { userId, isAuthenticated } = await auth();
 
     const regex = /^\d{2}-\d{2}-\d{2}$/;
     if (!regex.test(slug)) return notFound();
@@ -53,7 +55,11 @@ export default async function Notas({
     const previousDay = new Date(Date.UTC(2000 + year, month - 1, day - 1));
     const nextDay = new Date(Date.UTC(2000 + year, month - 1, day + 1));
 
-    const checkedRatings = await checkAllRatings(correctedDate);
+    const [checkedRatings, average] = await Promise.all([
+        checkAllRatings(correctedDate),
+        getDayAverage(correctedDate),
+    ]);
+
     const userData = await Promise.all(
         checkedRatings.userId.map(async (uid, index) => {
             const [username, profilePicture] = await Promise.all([
@@ -69,7 +75,6 @@ export default async function Notas({
         }),
     );
 
-    const average = await getDayAverage(correctedDate);
     const ratingsAreNotAvailable = checkedRatings?.ratings.length === 0;
 
     const checkIfDayHasRating = async () => {
@@ -98,29 +103,43 @@ export default async function Notas({
 
     const userRated = (await checkUserRating(userId, correctedDate)).ratedToday;
 
-    const { isAuthenticated } = await auth();
+    console.log({ userRated, ratingsAreNotAvailable });
 
     return (
         <div className="from-background flex h-dvh w-screen flex-col items-center justify-center gap-4 bg-gradient-to-b to-zinc-400/5 lg:mx-auto">
             {isAuthenticated ? (
-                <SlugComponent
-                    {...{
-                        userData,
-                        correctedDate,
-                        userId,
-                        average,
-                        nextDay,
-                        previousDay,
-                        checkedRatings,
-                        ratingsAreNotAvailable,
-                        checkIfDayHasRating,
-                        username,
-                        actualDate,
-                        nextActualDate,
-                        slug,
-                        userRated,
-                    }}
-                />
+                <Suspense
+                    fallback={
+                        <div className="lg:bg-primary-foreground lg:border-border flex min-h-full min-w-full flex-col justify-center gap-7 rounded-xl border p-6 lg:min-h-0 lg:min-w-96">
+                            <Skeleton className="h-4 w-18" />
+                            <div className="bg-secondary/15 mx-auto flex max-h-48 w-full max-w-96 flex-col items-center justify-center rounded-lg border">
+                                <div className="flex w-full flex-col">
+                                    <Skeleton className="h-5 w-full" />
+                                    <Skeleton className="h-5 w-full" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                >
+                    <SlugComponent
+                        {...{
+                            userData,
+                            userId,
+                            average,
+                            correctedDate: correctedDate.toISOString(),
+                            previousDay: previousDay.toISOString(),
+                            nextDay: nextDay.toISOString(),
+                            checkedRatings,
+                            ratingsAreNotAvailable,
+                            checkIfDayHasRating,
+                            username,
+                            actualDate,
+                            nextActualDate,
+                            slug,
+                            userRated,
+                        }}
+                    />
+                </Suspense>
             ) : (
                 <>
                     <p className="text-center">

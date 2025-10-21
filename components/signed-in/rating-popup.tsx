@@ -101,31 +101,16 @@ export default function RatingPopup({
                 disabled={isUpdating}
             >
                 <AnimatePresence initial={false} mode="wait">
-                    {isUpdating ? (
-                        <motion.div
-                            key="spinner"
-                            initial={{ y: 20 }}
-                            animate={{ y: 0 }}
-                            exit={{ y: -20 }}
-                            transition={{ duration: 0.1, ease: "easeIn" }}
-                        >
-                            <Spinner
-                                style={{
-                                    display: isUpdating ? "initial" : "none",
-                                }}
-                            />
-                        </motion.div>
-                    ) : (
-                        <motion.span
-                            key="text"
-                            initial={{ y: 20 }}
-                            animate={{ y: 0 }}
-                            exit={{ y: -20 }}
-                            transition={{ duration: 0.1, ease: "easeOut" }}
-                        >
-                            Confirmar
-                        </motion.span>
-                    )}
+                    <motion.div
+                        key={isUpdating ? "spinner" : "text"}
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -20, opacity: 0 }}
+                        transition={{ duration: 0.15, ease: "easeInOut" }}
+                        className="flex w-full items-center justify-center"
+                    >
+                        {isUpdating ? <Spinner /> : "Confirmar"}
+                    </motion.div>
                 </AnimatePresence>
             </Button>
         );

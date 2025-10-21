@@ -15,6 +15,7 @@ import {
 import { ChevronLeft, ChevronRight, Edit } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { formatInTimeZone } from "date-fns-tz";
 
 export default function SlugComponent({
     userData,
@@ -30,6 +31,10 @@ export default function SlugComponent({
     slug,
     userRated,
 }: SlugComponentInterface) {
+    const date = new Date(correctedDate);
+    const prev = new Date(previousDay);
+    const next = new Date(nextDay);
+
     const [newValues, setNewValues] = useState<string[]>(["0", "0"]);
     const [newValuesAnotherDay, setNewValuesAnotherDay] = useState<string[]>([
         "0",
@@ -39,12 +44,8 @@ export default function SlugComponent({
     const [isUpdating, setIsUpdating] = useState(false);
 
     function formatDateUTC(date: Date, linkFormatting?: boolean): string {
-        const d = date.getUTCDate().toString().padStart(2, "0");
-        const m = (date.getUTCMonth() + 1).toString().padStart(2, "0");
-        const y = (date.getUTCFullYear() % 100).toString().padStart(2, "0");
-
-        if (linkFormatting) return `${d}-${m}-${y}`;
-        return `${d}/${m}`;
+        const format = linkFormatting ? "dd-MM-yy" : "dd/MM";
+        return formatInTimeZone(date, "UTC", format);
     }
 
     async function sendRatingButtonFromAnotherDay() {
@@ -55,7 +56,8 @@ export default function SlugComponent({
                 userId,
                 newValues[0],
                 newValues[1],
-                correctedDate,
+                date,
+                `notas/${slug}`,
             );
 
             if (result?.success) {
@@ -77,7 +79,7 @@ export default function SlugComponent({
                 userId,
                 newValues[0],
                 newValues[1],
-                correctedDate,
+                date,
                 `/notas/${slug}`,
             );
 
@@ -96,7 +98,7 @@ export default function SlugComponent({
         <>
             <div className="lg:bg-primary-foreground lg:border-border flex min-h-full min-w-full flex-col justify-center gap-7 rounded-xl border p-6 lg:min-h-0 lg:min-w-96">
                 <p className="text-center text-2xl font-bold tracking-tight">
-                    {formatDateUTC(correctedDate)}
+                    {formatDateUTC(date)}
                 </p>
                 {!ratingsAreNotAvailable ? (
                     <>
@@ -193,40 +195,38 @@ export default function SlugComponent({
 
                 <div className="absolute bottom-4 left-1/2 w-[calc(100vw-3rem)] -translate-x-1/2 md:w-[calc(50vw)] lg:relative lg:bottom-0 lg:left-0 lg:w-full lg:translate-x-0">
                     <div className="flex flex-col items-center justify-center gap-3 *:flex-grow">
-                        {userRated ||
-                            (!ratingsAreNotAvailable && (
-                                <RatingPopup
-                                    {...{
-                                        openEditMenu,
-                                        setOpenEditMenu,
-                                        isUpdating,
-                                    }}
-                                    newValues={newValuesAnotherDay}
-                                    setNewValues={setNewValuesAnotherDay}
-                                    actionType="edit"
-                                    editRatingButton={editRatingFromAnotherDay}
-                                >
-                                    <Button
-                                        className="w-full"
-                                        onClick={sendRatingButtonFromAnotherDay}
-                                    >
-                                        Adicionar nota
-                                    </Button>
-                                </RatingPopup>
-                            ))}
+                        {!userRated && (
+                            <RatingPopup
+                                {...{
+                                    openEditMenu,
+                                    setOpenEditMenu,
+                                    isUpdating,
+                                    newValues,
+                                    setNewValues,
+                                }}
+                                actionType="add"
+                                editRatingButton={
+                                    sendRatingButtonFromAnotherDay
+                                }
+                            >
+                                <Button className="w-full">
+                                    Adicionar nota
+                                </Button>
+                            </RatingPopup>
+                        )}
                         <div className="flex w-full items-center justify-center gap-2">
                             <Link
-                                href={formatDateUTC(previousDay, true)}
+                                href={formatDateUTC(prev, true)}
                                 className="w-full *:w-full"
                             >
                                 <Button variant="secondary">
                                     <ChevronLeft />
-                                    {formatDateUTC(previousDay)}
+                                    {formatDateUTC(prev)}
                                 </Button>
                             </Link>
 
                             <Link
-                                href={formatDateUTC(nextDay, true)}
+                                href={formatDateUTC(next, true)}
                                 className="w-full *:w-full"
                                 onClick={(e) => {
                                     if (
@@ -243,7 +243,7 @@ export default function SlugComponent({
                                         nextActualDate.getTime()
                                     }
                                 >
-                                    {formatDateUTC(nextDay)}
+                                    {formatDateUTC(next)}
                                     <ChevronRight />
                                 </Button>
                             </Link>
