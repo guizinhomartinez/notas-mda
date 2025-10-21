@@ -1,5 +1,6 @@
 import NotFound from "@/components/notas-components/not-found";
 import SlugComponent from "@/components/notas-components/slug-component";
+import { Button } from "@/components/ui/button";
 import {
     getProfilePhotoByUserId,
     getUsernameByUserId,
@@ -10,6 +11,7 @@ import {
     getDayAverage,
 } from "@/functions/handle-rating-submit";
 import prisma from "@/lib/prisma";
+import { SignInButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 
@@ -26,7 +28,7 @@ export interface SlugComponentInterface {
     previousDay: Date;
     nextDay: Date;
     checkedRatings?: { ratings: number[]; userId: string[] };
-    pageNotFound: boolean;
+    ratingsAreNotAvailable: boolean;
     checkIfDayHasRating: () => void;
     username: string | null;
     actualDate: Date;
@@ -68,7 +70,7 @@ export default async function Notas({
     );
 
     const average = await getDayAverage(correctedDate);
-    const pageNotFound = checkedRatings?.ratings.length === 0;
+    const ratingsAreNotAvailable = checkedRatings?.ratings.length === 0;
 
     const checkIfDayHasRating = async () => {
         "use server";
@@ -83,37 +85,57 @@ export default async function Notas({
 
     const username = await getUsernameByUserId(userId);
     const actualDate = new Date();
-    const nextActualDate = new Date(Date.UTC(
-        actualDate.getUTCFullYear(),
-        actualDate.getUTCMonth(),
-        actualDate.getUTCDate() + 1,
-    ));
+    const nextActualDate = new Date(
+        Date.UTC(
+            actualDate.getUTCFullYear(),
+            actualDate.getUTCMonth(),
+            actualDate.getUTCDate() + 1,
+        ),
+    );
 
     actualDate.setUTCHours(0, 0, 0, 0);
     nextActualDate.setUTCHours(0, 0, 0, 0);
 
     const userRated = (await checkUserRating(userId, correctedDate)).ratedToday;
 
+    const { isAuthenticated } = await auth();
+
     return (
         <div className="from-background flex h-dvh w-screen flex-col items-center justify-center gap-4 bg-gradient-to-b to-zinc-400/5 lg:mx-auto">
-            <SlugComponent
-                {...{
-                    userData,
-                    correctedDate,
-                    userId,
-                    average,
-                    nextDay,
-                    previousDay,
-                    checkedRatings,
-                    pageNotFound,
-                    checkIfDayHasRating,
-                    username,
-                    actualDate,
-                    nextActualDate,
-                    slug,
-                    userRated
-                }}
-            />
+            {isAuthenticated ? (
+                <SlugComponent
+                    {...{
+                        userData,
+                        correctedDate,
+                        userId,
+                        average,
+                        nextDay,
+                        previousDay,
+                        checkedRatings,
+                        ratingsAreNotAvailable,
+                        checkIfDayHasRating,
+                        username,
+                        actualDate,
+                        nextActualDate,
+                        slug,
+                        userRated,
+                    }}
+                />
+            ) : (
+                <>
+                    <p className="text-center">
+                        Você não está logado. Entre em uma conta ou vá embora.
+                    </p>
+                    <Button className="p-5" asChild>
+                        <SignInButton
+                            fallbackRedirectUrl={`/notas/${slug}`}
+                            signUpFallbackRedirectUrl={`/notas/${slug}`}
+                        >
+                            Log-in
+                        </SignInButton>
+                    </Button>
+                </>
+            )}
         </div>
     );
 }

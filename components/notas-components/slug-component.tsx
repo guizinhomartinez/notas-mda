@@ -23,7 +23,7 @@ export default function SlugComponent({
     average,
     previousDay,
     nextDay,
-    pageNotFound,
+    ratingsAreNotAvailable,
     username,
     actualDate,
     nextActualDate,
@@ -98,7 +98,7 @@ export default function SlugComponent({
                 <p className="text-center text-2xl font-bold tracking-tight">
                     {formatDateUTC(correctedDate)}
                 </p>
-                {!pageNotFound ? (
+                {!ratingsAreNotAvailable ? (
                     <>
                         <ScrollAreaDemo className="bg-secondary/15 mx-auto flex max-h-48 w-full max-w-96 flex-col items-center justify-center rounded-lg border">
                             <div className="flex w-full flex-col">
@@ -194,7 +194,7 @@ export default function SlugComponent({
                 <div className="absolute bottom-4 left-1/2 w-[calc(100vw-3rem)] -translate-x-1/2 md:w-[calc(50vw)] lg:relative lg:bottom-0 lg:left-0 lg:w-full lg:translate-x-0">
                     <div className="flex flex-col items-center justify-center gap-3 *:flex-grow">
                         {userRated ||
-                            (!pageNotFound && (
+                            (!ratingsAreNotAvailable && (
                                 <RatingPopup
                                     {...{
                                         openEditMenu,
