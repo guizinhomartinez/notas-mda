@@ -37,6 +37,7 @@ export async function sendRating(
     if (!userId) throw new Error("No user ID provided");
 
     const now = new Date();
+    now.setHours(now.getHours() - 3);
     const { start, end } = getUTCDayRange(now);
 
     const existingRating = await prisma.rating.findFirst({

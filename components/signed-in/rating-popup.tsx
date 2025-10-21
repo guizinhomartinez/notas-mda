@@ -25,6 +25,7 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "motion/react";
 
 const number = createArray(11);
 const number2 = createArray(10);
@@ -99,8 +100,33 @@ export default function RatingPopup({
                 onClick={editRatingButton}
                 disabled={isUpdating}
             >
-                {isUpdating && <Spinner />}
-                Confirmar
+                <AnimatePresence initial={false} mode="wait">
+                    {isUpdating ? (
+                        <motion.div
+                            key="spinner"
+                            initial={{ y: 20 }}
+                            animate={{ y: 0 }}
+                            exit={{ y: -20 }}
+                            transition={{ duration: 0.1, ease: "easeIn" }}
+                        >
+                            <Spinner
+                                style={{
+                                    display: isUpdating ? "initial" : "none",
+                                }}
+                            />
+                        </motion.div>
+                    ) : (
+                        <motion.span
+                            key="text"
+                            initial={{ y: 20 }}
+                            animate={{ y: 0 }}
+                            exit={{ y: -20 }}
+                            transition={{ duration: 0.1, ease: "easeOut" }}
+                        >
+                            Confirmar
+                        </motion.span>
+                    )}
+                </AnimatePresence>
             </Button>
         );
     };
@@ -116,7 +142,9 @@ export default function RatingPopup({
                         <DrawerTitle className="text-center text-2xl font-bold tracking-tight">
                             {actionType === "add" ? "Adicionar" : "Editar"} nota
                         </DrawerTitle>
-                        <DrawerDescription className={cn(actionType === "edit" && "hidden")}>
+                        <DrawerDescription
+                            className={cn(actionType === "edit" && "hidden")}
+                        >
                             Coloque a {actionType === "add" && "nova"} nota
                         </DrawerDescription>
                     </DrawerHeader>
@@ -124,7 +152,9 @@ export default function RatingPopup({
                     <DrawerFooter className="mb-4">
                         <Confirmar />
                         <DrawerClose className="w-full">
-                            <Button variant="outline" className="p-3 w-full">Cancelar</Button>
+                            <Button variant="outline" className="w-full p-3">
+                                Cancelar
+                            </Button>
                         </DrawerClose>
                     </DrawerFooter>
                 </DrawerContent>
@@ -142,7 +172,12 @@ export default function RatingPopup({
                     <DialogTitle className="text-center text-3xl font-bold tracking-tight">
                         {actionType === "add" ? "Adicionar" : "Editar"} nota
                     </DialogTitle>
-                    <DialogDescription className={cn("text-primary/80 -mt-2 text-center", actionType === "edit" && "hidden")}>
+                    <DialogDescription
+                        className={cn(
+                            "text-primary/80 -mt-2 text-center",
+                            actionType === "edit" && "hidden",
+                        )}
+                    >
                         Coloque a {actionType === "add" && "nova"} nota
                     </DialogDescription>
                 </DialogHeader>

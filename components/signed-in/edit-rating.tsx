@@ -56,7 +56,7 @@ export default function EditRatingUI({
                     href={`/notas/${correctedDate}`}
                     className="flex-grow *:w-full *:flex-grow"
                 >
-                    <Button variant="secondary">Ver as notas dos outros</Button>
+                    <Button variant="secondary">Ver outras notas</Button>
                 </Link>
             </div>
         </>

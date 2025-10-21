@@ -2,30 +2,10 @@ import type { WheelPickerOption } from "@/components/wheel-picker";
 import { WheelPicker, WheelPickerWrapper } from "@/components/wheel-picker";
 import { Dot } from "lucide-react";
 import { Button } from "../ui/button";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "../ui/alert-dialog";
 import { Spinner } from "../ui/spinner";
 import { useIsMobile } from "@/hooks/use-mobile";
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-} from "../ui/drawer";
 import { Dispatch, SetStateAction } from "react";
+import { AnimatePresence, motion } from "motion/react";
 
 export const createArray = (length: number, add = 0): WheelPickerOption[] =>
     Array.from({ length }, (_, i) => {
@@ -48,7 +28,7 @@ export default function RatingForm({
     setFirstValue,
     setSecondValue,
     setOpen,
-    setLoading
+    setLoading,
 }: {
     firstValue: string;
     secondValue: string;
@@ -58,9 +38,8 @@ export default function RatingForm({
     setSecondValue: Dispatch<SetStateAction<string>>;
     setOpen: Dispatch<SetStateAction<boolean>>;
     setLoading: Dispatch<SetStateAction<boolean>>;
-    handleConfirm: () => void
+    handleConfirm: () => void;
 }) {
-
     const isMobile = useIsMobile();
     return (
         <>
@@ -99,82 +78,39 @@ export default function RatingForm({
                 {firstValue}
                 {Number(firstValue) < 10 && `.${secondValue}`}
             </div>
-            {isMobile ? (
-                <Drawer open={open} onOpenChange={setOpen}>
-                    <DrawerTrigger asChild>
-                        <Button className="w-48">Confirmar</Button>
-                    </DrawerTrigger>
-                    <DrawerContent className="!rounded-t-xl">
-                        <DrawerHeader>
-                            <DrawerTitle className="text-2xl font-bold tracking-tight">
-                                Tem certeza?
-                            </DrawerTitle>
-                            <DrawerDescription>
-                                Tem certeza que sua nota do dia é de{" "}
-                                {firstValue}.{secondValue}
-                            </DrawerDescription>
-                        </DrawerHeader>
-                        <DrawerFooter className="flex flex-col gap-2 *:flex-1">
-                            <Button
-                                className="rounded-full p-3"
-                                onClick={handleConfirm}
-                                disabled={loading}
-                            >
-                                <Spinner
-                                    style={{
-                                        display: loading ? "initial" : "none",
-                                    }}
-                                />
-                                {loading ? "Enviando..." : "Continuar"}
-                            </Button>
-                            <DrawerClose asChild>
-                                <Button
-                                    className="p-3"
-                                    variant="outline"
-                                    disabled={loading}
-                                >
-                                    Cancel
-                                </Button>
-                            </DrawerClose>
-                        </DrawerFooter>
-                    </DrawerContent>
-                </Drawer>
-            ) : (
-                <AlertDialog open={open} onOpenChange={setOpen}>
-                    <AlertDialogTrigger asChild>
-                        <Button className="w-full">Confirmar</Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                            <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                Tem certeza que sua nota do dia é de{" "}
-                                {firstValue}.{secondValue}
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter className="*:flex-1">
-                            <AlertDialogCancel disabled={loading}>
-                                Cancelar
-                            </AlertDialogCancel>
-                            <AlertDialogAction asChild>
-                                <Button
-                                    onClick={handleConfirm}
-                                    disabled={loading}
-                                >
-                                    <Spinner
-                                        style={{
-                                            display: loading
-                                                ? "initial"
-                                                : "none",
-                                        }}
-                                    />
-                                    {loading ? "Enviando..." : "Continuar"}
-                                </Button>
-                            </AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
-            )}
+            <Button
+                className="relative transition-[width] overflow-hidden p-3 px-4"
+                onClick={handleConfirm}
+                disabled={loading}
+            >
+                <AnimatePresence initial={false} mode="wait">
+                    {loading ? (
+                        <motion.div
+                            key="spinner"
+                            initial={{ y: 20 }}
+                            animate={{ y: 0 }}
+                            exit={{ y: -20 }}
+                            transition={{ duration: 0.1, ease: "easeIn" }}
+                        >
+                            <Spinner
+                                style={{
+                                    display: loading ? "initial" : "none",
+                                }}
+                            />
+                        </motion.div>
+                    ) : (
+                        <motion.span
+                            key="text"
+                            initial={{ y: 20 }}
+                            animate={{ y: 0 }}
+                            exit={{ y: -20 }}
+                            transition={{ duration: 0.1, ease: "easeOut" }}
+                        >
+                            Enviar
+                        </motion.span>
+                    )}
+                </AnimatePresence>
+            </Button>
         </>
     );
 }
