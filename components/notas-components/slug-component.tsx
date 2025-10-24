@@ -36,10 +36,6 @@ export default function SlugComponent({
     const next = new Date(nextDay);
 
     const [newValues, setNewValues] = useState<string[]>(["0", "0"]);
-    const [newValuesAnotherDay, setNewValuesAnotherDay] = useState<string[]>([
-        "0",
-        "0",
-    ]);
     const [openEditMenu, setOpenEditMenu] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
 

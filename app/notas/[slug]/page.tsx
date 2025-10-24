@@ -42,9 +42,9 @@ export interface SlugComponentInterface {
 export default async function Notas({
     params,
 }: {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 }) {
-    const { slug } = params;
+    const { slug } = await params;
     const { userId, isAuthenticated } = await auth();
 
     const regex = /^\d{2}-\d{2}-\d{2}$/;
@@ -103,20 +103,23 @@ export default async function Notas({
 
     const userRated = (await checkUserRating(userId, correctedDate)).ratedToday;
 
-    console.log({ userRated, ratingsAreNotAvailable });
-
     return (
         <div className="from-background flex h-dvh w-screen flex-col items-center justify-center gap-4 bg-gradient-to-b to-zinc-400/5 lg:mx-auto">
             {isAuthenticated ? (
                 <Suspense
+                    key={`notas (${slug})`}
                     fallback={
                         <div className="lg:bg-primary-foreground lg:border-border flex min-h-full min-w-full flex-col justify-center gap-7 rounded-xl border p-6 lg:min-h-0 lg:min-w-96">
-                            <Skeleton className="h-4 w-18" />
-                            <div className="bg-secondary/15 mx-auto flex max-h-48 w-full max-w-96 flex-col items-center justify-center rounded-lg border">
+                            <Skeleton className="mx-auto h-8 w-32" />
+                            <div className="bg-secondary/15 mx-auto flex max-h-48 w-full max-w-96 flex-col items-center justify-center rounded-lg border overflow-hidden">
                                 <div className="flex w-full flex-col">
-                                    <Skeleton className="h-5 w-full" />
-                                    <Skeleton className="h-5 w-full" />
+                                    <Skeleton className="h-12 w-full rounded-none border-b border-b-primary/5" />
+                                    <Skeleton className="h-12 w-full rounded-none" />
                                 </div>
+                            </div>
+                            <div className="flex items-center justify-center gap-2 *:flex-grow">
+                                <Skeleton className="h-12" />
+                                <Skeleton className="h-12" />
                             </div>
                         </div>
                     }
