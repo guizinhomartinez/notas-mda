@@ -1,40 +1,69 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ScrollAreaDemo } from "@/components/vertical-scroll";
+import { formatInTimeZone } from "date-fns-tz";
 import Link from "next/link";
 
+function getUTCDayRange(date: Date) {
+    const dayRange = new Date(
+        Date.UTC(
+            date.getUTCFullYear(),
+            date.getUTCMonth(),
+            date.getUTCDate(),
+            0,
+            0,
+            0,
+            0,
+        ),
+    );
+    return { dayRange };
+}
+
 export default function Home() {
+    const now = new Date();
+    now.setHours(now.getHours() - 3);
+    const { dayRange } = getUTCDayRange(now);
+
+    function formatDateUTC(date: Date): string {
+        const format = "dd-MM-yy";
+        return formatInTimeZone(date, "UTC", format);
+    }
+
     return (
-        <div className="from-background flex h-dvh max-h-dvh w-screen flex-col items-center justify-center gap-24 bg-gradient-to-b to-zinc-400/5 p-8">
-            <div className="flex flex-col items-center justify-center gap-3">
-                <h1 className="bg-gradient-to-b from-zinc-400 to-zinc-700 bg-clip-text text-center text-7xl font-bold text-transparent dark:bg-gradient-to-t dark:!from-transparent dark:to-zinc-400">
-                    Notas do M.D.A.
-                </h1>
-            </div>
-            <div className="flex flex-col flex-wrap items-center justify-center gap-4 *:flex-1">
-                <Link href="/conteudo">
-                <Button className="px-4 py-3">Começar o processo.</Button>                
-                </Link>
+        <ScrollAreaDemo className="from-background h-dvh max-h-dvh w-screen bg-gradient-to-b to-zinc-400/5">
+            <div className="flex flex-col items-center justify-center gap-12 p-8 md:h-dvh md:gap-24">
+                <div className="flex flex-col items-center justify-center gap-3">
+                    <h1 className="bg-gradient-to-b from-zinc-400 to-zinc-700 bg-clip-text text-center text-7xl font-bold text-transparent dark:bg-gradient-to-t dark:!from-transparent dark:to-zinc-400">
+                        Notas do M.D.A.
+                    </h1>
+                </div>
+                <div className="flex flex-col items-center justify-center gap-4">
+                    <div className="flex flex-col items-center justify-center gap-3">
+                        <Link href="/conteudo">
+                            <Button size="lg">Começar o processo.</Button>
+                        </Link>
+                        <Link href={`/notas/${formatDateUTC(dayRange)}`} className="w-full">
+                            <Button
+                                className="w-full"
+                                variant="secondary"
+                                size="lg"
+                            >
+                                Ver as notas de hoje
+                            </Button>
+                        </Link>
+                    </div>
 
-                <div className="flex items-center justify-center gap-2 *:w-40 md:*:w-40">
-                    <Link
-                        href="/constituicao"
-                        className="flex-grow *:h-10 *:w-40 *:flex-wrap md:*:w-40"
-                    >
-                        <Button variant="outline">Constituição.</Button>
-                    </Link>
-
-                    <Link
-                        href="/sobre"
-                        className="flex-grow *:h-10 *:w-40 *:flex-wrap md:*:w-40"
-                    >
-                        <Button variant="outline">
-                            O que é o MDA?
-                        </Button>
-                    </Link>
+                    <div className="flex gap-3 pt-2">
+                        <Link href="/constituicao">
+                            <Button variant="link">Constituição.</Button>
+                        </Link>
+                        <Link href="/sobre">
+                            <Button variant="link">O que é o MDA?</Button>
+                        </Link>
+                    </div>
                 </div>
             </div>
-        </div>
+        </ScrollAreaDemo>
     );
 }

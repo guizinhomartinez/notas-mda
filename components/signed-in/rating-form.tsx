@@ -79,7 +79,7 @@ export default function RatingForm({
                 {Number(firstValue) < 10 && `.${secondValue}`}
             </div>
             <Button
-                className="relative transition-[width] overflow-hidden p-3 px-4"
+                className="relative overflow-hidden p-3 px-4 w-24"
                 onClick={handleConfirm}
                 disabled={loading}
             >

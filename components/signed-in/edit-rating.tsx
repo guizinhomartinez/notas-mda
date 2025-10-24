@@ -39,7 +39,7 @@ export default function EditRatingUI({
             <p>
                 Sua nota hoje foi {ratedValue ?? `${firstValue}.${secondValue}`}
             </p>
-            <div className="flex flex-col gap-2 *:flex-grow">
+            <div className="flex gap-2 *:flex-grow">
                 <RatingPopup
                     {...{
                         editRatingButton,
@@ -56,7 +56,7 @@ export default function EditRatingUI({
                     href={`/notas/${correctedDate}`}
                     className="flex-grow *:w-full *:flex-grow"
                 >
-                    <Button variant="secondary">Ver outras notas</Button>
+                    <Button variant="outline">Ver outras notas</Button>
                 </Link>
             </div>
         </>
