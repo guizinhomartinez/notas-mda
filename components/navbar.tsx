@@ -54,7 +54,7 @@ export default async function Navbar() {
                     </Button>
                 ) : (
                     <Button
-                        className="rounded-full p-5"
+                        className="p-5"
                         variant="outline"
                         asChild
                     >
