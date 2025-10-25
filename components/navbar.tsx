@@ -54,7 +54,6 @@ export default async function Navbar() {
                     </Button>
                 ) : (
                     <Button
-                        className="p-5"
                         variant="outline"
                         asChild
                     >
