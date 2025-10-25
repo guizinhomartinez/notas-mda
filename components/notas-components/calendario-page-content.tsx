@@ -1,17 +1,26 @@
 "use client";
 
-import { DayAverage } from "@/app/notas/page";
 import CalendarNotas from "@/components/notas-components/calendar";
-import { cn } from "@/lib/utils";
+import { motion } from "motion/react";
 import { useState } from "react";
 
-export default function CalendarioPageContent({
-    date,
-    averages,
-}: {
-    date: Date;
-    averages: DayAverage[];
-}) {
+interface tabTypesInterface {
+    text: string;
+    type: "month" | "week";
+}
+
+const tabTypes: tabTypesInterface[] = [
+    {
+        text: "Mês",
+        type: "month",
+    },
+    {
+        text: "Semana",
+        type: "week",
+    },
+];
+
+export default function CalendarioPageContent({ date }: { date: Date }) {
     const [tab, setTab] = useState<"month" | "week">("month");
 
     const [dateState, setDateState] = useState<Date>(date);
@@ -25,78 +34,45 @@ export default function CalendarioPageContent({
 
     const correctedDate = `${day}-${month}-${year}`;
 
-    // const AveragesMapComponent = ({ index }: { index: number }) => {
-    //     const day = new Date(date.getFullYear(), index, 1);
-
-    //     const CalendarComponent = ({ value }: { value: number }) => {
-    //         return (
-    //             <div>
-    //                 {Array.from({ length: 12 }).map((_, index) => (
-    //                     <CalendarNotas
-    //                         key={index}
-    //                         month={day}
-    //                         date={dateState}
-    //                         setDate={setDateState}
-    //                         textStr={String(value)}
-    //                         hrefStr={correctedDate}
-    //                         hoveredDate={hoveredDate}
-    //                         setHoveredDate={setHoveredDate}
-    //                     />
-    //                 ))}
-    //             </div>
-    //         );
-    //     };
-
-    //     return (
-    //         <div>
-    //             {averages.map((value, index) => (
-    //                 <CalendarComponent value={value.average ?? 0} key={index} />
-    //             ))}
-    //         </div>
-    //     );
-    // };
-
     return (
         <>
             <div className="flex flex-col items-center justify-center gap-2 p-4 py-20">
-                <p className="absolute top-5 right-5">{hoveredDate?.toString()}</p>
-                <div className="bg-primary-foreground/50 border-border absolute top-2.5 left-1/2 z-50 flex w-max -translate-x-1/2 gap-0.5 rounded-lg border p-0.5 opacity-50 backdrop-blur-sm transition-opacity duration-150 hover:opacity-100">
-                    <button
-                        className={cn(
-                            "w-24 rounded-md px-1 py-0.5 transition-colors duration-150",
-                            tab === "month"
-                                ? "bg-secondary"
-                                : "hover:bg-secondary/50",
-                        )}
-                        onClick={(e) => setTab("month")}
-                    >
-                        Mês
-                    </button>
-                    <button
-                        className={cn(
-                            "w-24 rounded-md px-1 py-0.5 transition-colors duration-150",
-                            tab === "week"
-                                ? "bg-secondary"
-                                : "hover:bg-secondary/50",
-                        )}
-                        onClick={(e) => setTab("week")}
-                    >
-                        Semana
-                    </button>
-                </div>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                    {Array.from({ length: 12 }).map((_, index) => (
-                        <CalendarNotas
+                <p className="absolute top-5 right-5">
+                    {hoveredDate?.toString()}
+                </p>
+                <div className="bg-primary-foreground/50 border-border absolute bottom-2.5 left-1/2 z-40 flex w-max -translate-x-1/2 gap-0.5 rounded-lg border p-0.5 opacity-50 backdrop-blur-sm transition-opacity duration-150 hover:opacity-100">
+                    {tabTypes.map((element, index) => (
+                        <button
+                            className="hover:bg-secondary/50 relative w-24 rounded-md px-1 py-0.5 transition-colors duration-150"
+                            onClick={() => setTab(element.type)}
                             key={index}
-                            month={new Date(date.getFullYear(), index, 1)}
-                            date={dateState}
-                            setDate={setDateState}
-                            textStr={"a"}
-                            hrefStr={correctedDate}
-                            hoveredDate={hoveredDate}
-                            setHoveredDate={setHoveredDate}
-                        />
+                        >
+                            {element.text}
+
+                            {element.type === tab && (
+                                <motion.div
+                                    layoutId="tabs-background-calendar"
+                                    className="bg-secondary absolute inset-0 -z-10 rounded-lg"
+                                    transition={{
+                                        type: "spring",
+                                        bounce: 0,
+                                        duration: 0.6,
+                                    }}
+                                ></motion.div>
+                            )}
+                        </button>
                     ))}
+                </div>
+                <div className="flex items-center justify-center">
+                    <CalendarNotas
+                        month={date}
+                        date={dateState}
+                        setDate={setDateState}
+                        textStr={"a"}
+                        hrefStr={correctedDate}
+                        hoveredDate={hoveredDate}
+                        setHoveredDate={setHoveredDate}
+                    />
                 </div>
             </div>
         </>

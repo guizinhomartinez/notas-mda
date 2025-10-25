@@ -1,12 +1,10 @@
 import { SignInButton, UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "./ui/change-theme";
-import GoBackPage from "./ui/go-back-page";
 import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs/server";
-import Link from "next/link";
-import { HomeIcon } from "lucide-react";
 import NavbarLinks from "@/components/navbar-links";
 import NavbarCenter from "@/components/navbar-center";
+import { getUsernameByUserId } from "@/functions/clerk-handling";
 
 function getUTCDayRange(date: Date) {
     const dayRange = new Date(
@@ -24,17 +22,23 @@ function getUTCDayRange(date: Date) {
 }
 
 export default async function Navbar() {
-    const { isAuthenticated } = await auth();
+    const { isAuthenticated, userId } = await auth();
 
     const now = new Date();
     now.setHours(now.getHours() - 3);
     const { dayRange } = getUTCDayRange(now);
 
+    const username = await getUsernameByUserId(userId);
+
     return (
         <div className="from-background absolute top-0 left-0 z-50 flex w-full items-center justify-between bg-gradient-to-b to-transparent to-100% px-3 py-2">
             <NavbarLinks />
-            <NavbarCenter date={dayRange} />
-            <div className="flex items-center gap-2">
+            <NavbarCenter
+                date={dayRange}
+                isAuthenticated={isAuthenticated}
+                username={username}
+            />
+            <div className="hidden items-center gap-2 md:flex">
                 {isAuthenticated ? (
                     <Button asChild className="size-10">
                         <UserButton
@@ -57,7 +61,7 @@ export default async function Navbar() {
                         <SignInButton>Log-in</SignInButton>
                     </Button>
                 )}
-                <ModeToggle />
+                <ModeToggle expandOnHover />
             </div>
         </div>
     );

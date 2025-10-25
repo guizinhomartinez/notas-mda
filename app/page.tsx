@@ -32,7 +32,7 @@ export default function Home() {
 
     return (
         <ScrollAreaDemo className="from-background h-dvh max-h-dvh w-screen bg-gradient-to-b to-zinc-400/5">
-            <div className="flex flex-col items-center justify-center gap-12 p-8 md:h-dvh md:gap-24">
+            <div className="flex flex-col items-center justify-center gap-12 p-8 h-dvh md:gap-24">
                 <div className="flex flex-col items-center justify-center gap-3">
                     <h1 className="bg-gradient-to-b from-zinc-400 to-zinc-700 bg-clip-text text-center text-7xl font-bold text-transparent dark:bg-gradient-to-t dark:!from-transparent dark:to-zinc-400">
                         Notas do M.D.A.
