@@ -53,7 +53,7 @@ export default function EmptyNota({
                     }}
                     actionType="add"
                 >
-                    <Button size="sm">Adicionar nota</Button>
+                    <Button size="lg">Adicionar nota</Button>
                 </RatingPopup>
             </EmptyContent>
         </Empty>
