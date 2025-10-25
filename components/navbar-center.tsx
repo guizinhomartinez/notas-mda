@@ -91,6 +91,12 @@ export default function NavbarCenter({
         },
     ];
 
+    const isActiveTab = navbarButtons.map(
+        (element, index) =>
+            pathname === element.link ||
+            (pathname.startsWith("/nota") && element.link.startsWith("/nota")),
+    );
+
     return (
         <>
             {isMobile ? (
@@ -160,7 +166,10 @@ export default function NavbarCenter({
                                         </Button>
                                     )}
                                     <div className="absolute top-2 left-3">
-                                        <DropdownMenu open={openDropdown} onOpenChange={setOpenDropdown}>
+                                        <DropdownMenu
+                                            open={openDropdown}
+                                            onOpenChange={setOpenDropdown}
+                                        >
                                             <DropdownMenuTrigger asChild>
                                                 <Button
                                                     variant="ghost"
@@ -219,8 +228,7 @@ export default function NavbarCenter({
                                                     variant="ghost"
                                                     className={cn(
                                                         "border-b-border w-full justify-between gap-3 rounded-none border-b !py-4",
-                                                        pathname ===
-                                                            element.link &&
+                                                        isActiveTab &&
                                                             "!bg-accent",
                                                     )}
                                                     onClick={() =>
@@ -255,11 +263,13 @@ export default function NavbarCenter({
                     <AnimatePresence>
                         {open && (
                             <motion.div
-                                initial={{opacity: 0}}
+                                initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                transition={{duration: 0.3}}
-                                onClick={() => !openDropdown && setOpen(prev => !prev)}
+                                transition={{ duration: 0.3 }}
+                                onClick={() =>
+                                    !openDropdown && setOpen((prev) => !prev)
+                                }
                                 className="absolute inset-0 z-50 h-screen w-screen bg-black/50"
                             />
                         )}
@@ -278,11 +288,7 @@ export default function NavbarCenter({
                                     variant="ghost"
                                     className={cn(
                                         "!text-primary/75 relative transition-all",
-                                        (pathname === element.link ||
-                                            (pathname.startsWith("/nota") &&
-                                                element.link.startsWith(
-                                                    "/nota",
-                                                ))) &&
+                                        isActiveTab &&
                                             "!text-primary hover:!bg-transparent",
                                     )}
                                 >
@@ -290,16 +296,12 @@ export default function NavbarCenter({
                                         <Icon
                                             size={20}
                                             strokeWidth={1.5}
-                                            className="text-muted-foreground"
+                                            className={cn("text-foreground", isActiveTab && "fill-foreground")}
                                         />
                                     )}
 
                                     {element.text}
-                                    {(pathname === element.link ||
-                                        (pathname.startsWith("/nota") &&
-                                            element.link.startsWith(
-                                                "/nota",
-                                            ))) && (
+                                    {isActiveTab && (
                                         <motion.div
                                             layoutId="tabs-background"
                                             className="bg-accent absolute inset-0 -z-10 rounded-lg"

@@ -2,7 +2,7 @@ import { SignInButton, UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "./ui/change-theme";
 import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs/server";
-import NavbarLinks from "@/components/navbar-links";
+import NavbarHomeButton from "@/components/navbar-home-buttons";
 import NavbarCenter from "@/components/navbar-center";
 import { getUsernameByUserId } from "@/functions/clerk-handling";
 
@@ -32,7 +32,7 @@ export default async function Navbar() {
 
     return (
         <div className="from-background absolute top-0 left-0 z-50 flex w-full items-center justify-between bg-gradient-to-b to-transparent to-100% px-3 py-2">
-            <NavbarLinks />
+            <NavbarHomeButton />
             <NavbarCenter
                 date={dayRange}
                 isAuthenticated={isAuthenticated}
