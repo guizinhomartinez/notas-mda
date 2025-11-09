@@ -50,14 +50,30 @@ export function ModeToggle({
                     className={cn(
                         "group *:text-foreground relative justify-start overflow-hidden px-3 duration-300",
                         !expandOnHover && "justify-center",
-                        theme !== "system" && expandOnHover
-                            ? "hover:w-32"
-                            : "hover:!w-[7.5rem]",
+                        expandOnHover &&
+                            (theme !== "system"
+                                ? "hover:w-32"
+                                : "hover:!w-[7.5rem]"),
                     )}
                 >
-                    <Sun className="h-[1.2rem] w-[1.2rem] -translate-x-0.5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                    <Moon className="absolute h-[1.2rem] w-[1.2rem] -translate-x-0.5 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-                    <span className="opacity-0 duration-300 group-hover:opacity-100">
+                    <Sun
+                        className={cn(
+                            "h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90",
+                            expandOnHover && "translate-x-0.5",
+                        )}
+                    />
+                    <Moon
+                        className={cn(
+                            "absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0",
+                            expandOnHover && "translate-x-0.5",
+                        )}
+                    />
+                    <span
+                        className={cn(
+                            "opacity-0 duration-300 group-hover:opacity-100",
+                            !expandOnHover && "hidden",
+                        )}
+                    >
                         {theme !== "system"
                             ? `${capitalizeFirstLetter(String(theme))} theme`
                             : "System"}

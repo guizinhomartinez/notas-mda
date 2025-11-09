@@ -13,10 +13,16 @@ export default function NavbarHomeButton() {
         <div className="flex items-center gap-2">
             <Link href="/">
                 <Button
-                    variant="ghost"
+                    variant="outline"
                     className={cn("group", pathname === "/" && "bg-accent")}
+                    size="icon"
                 >
-                    <HomeIcon className={cn("transition-all duration-300 text-foreground", pathname === "/" && "fill-primary")} />
+                    <HomeIcon
+                        className={cn(
+                            "text-foreground transition-all duration-300",
+                            pathname === "/" && "fill-primary",
+                        )}
+                    />
                 </Button>
             </Link>
         </div>

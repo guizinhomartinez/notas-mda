@@ -53,14 +53,11 @@ export default async function Navbar() {
                         />
                     </Button>
                 ) : (
-                    <Button
-                        variant="outline"
-                        asChild
-                    >
+                    <Button variant="outline" asChild>
                         <SignInButton>Log-in</SignInButton>
                     </Button>
                 )}
-                <ModeToggle expandOnHover />
+                <ModeToggle />
             </div>
         </div>
     );

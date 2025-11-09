@@ -118,7 +118,11 @@ export default function RatingPopup({
 
     if (isMobile) {
         return (
-            <Drawer open={openEditMenu} onOpenChange={setOpenEditMenu}>
+            <Drawer
+                open={openEditMenu}
+                onOpenChange={setOpenEditMenu}
+                dismissible={false}
+            >
                 <DrawerTrigger asChild>
                     {children ? children : <Button>Editar nota</Button>}
                 </DrawerTrigger>
@@ -136,7 +140,7 @@ export default function RatingPopup({
                     <Content />
                     <DrawerFooter className="mb-4">
                         <Confirmar />
-                        <DrawerClose className="w-full">
+                        <DrawerClose className="w-full" asChild>
                             <Button variant="outline" className="w-full p-3">
                                 Cancelar
                             </Button>
