@@ -1,10 +1,11 @@
 import { SignInButton, UserButton } from "@clerk/nextjs";
-import { ModeToggle } from "./ui/change-theme";
+import { ModeToggle } from "../ui/change-theme";
 import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs/server";
-import NavbarHomeButton from "@/components/navbar-home-buttons";
-import NavbarCenter from "@/components/navbar-center";
+import NavbarHomeButton from "@/components/navbar/navbar-home-buttons";
+import NavbarCenter from "@/components/navbar/navbar-center";
 import { getUsernameByUserId } from "@/functions/clerk-handling";
+import ClerkProfilePicture from "./clerk-profile-picture";
 
 function getUTCDayRange(date: Date) {
     const dayRange = new Date(
@@ -40,18 +41,7 @@ export default async function Navbar() {
             />
             <div className="hidden items-center gap-2 md:flex">
                 {isAuthenticated ? (
-                    <Button asChild className="size-10">
-                        <UserButton
-                            appearance={{
-                                elements: {
-                                    userButtonAvatarBox: {
-                                        width: "2.2rem",
-                                        height: "2.2rem",
-                                    },
-                                },
-                            }}
-                        />
-                    </Button>
+                    <ClerkProfilePicture />
                 ) : (
                     <Button variant="outline" asChild>
                         <SignInButton>Log-in</SignInButton>

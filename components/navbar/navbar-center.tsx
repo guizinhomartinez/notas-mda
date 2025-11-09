@@ -33,15 +33,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { SignInButton, UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "@/components/ui/change-theme";
 import { Separator } from "@/components/ui/separator";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { capitalizeFirstLetter } from "@/lib/capitalize-first-letter";
 import { useTheme } from "next-themes";
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface navbarButtonsType {
     text: string;
@@ -61,8 +54,6 @@ export default function NavbarCenter({
     const pathname = usePathname();
     const isMobile = useIsMobile();
     const [open, setOpen] = useState(false);
-    const [openDropdown, setOpenDropdown] = useState(false);
-    const { theme, setTheme } = useTheme();
 
     const [pageLoaded, setPageLoaded] = useState(false);
 
@@ -263,10 +254,7 @@ export default function NavbarCenter({
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
                                         transition={{ duration: 0.3 }}
-                                        onClick={() =>
-                                            !openDropdown &&
-                                            setOpen((prev) => !prev)
-                                        }
+                                        onClick={() => setOpen((prev) => !prev)}
                                         className="absolute inset-0 z-50 h-screen w-screen bg-black/50"
                                     />
                                 )}
@@ -275,7 +263,7 @@ export default function NavbarCenter({
                     )}
                 </>
             ) : (
-                <div className="bg-primary-foreground/50 border-border absolute top-1 left-1/2 mx-auto hidden w-fit -translate-x-1/2 items-center justify-center gap-1 overflow-x-auto rounded-lg border p-1 backdrop-blur-md transition-all duration-300 hover:shadow-md md:flex">
+                <div className="bg-primary-foreground/50 border-border absolute top-1 left-1/2 mx-auto hidden w-fit -translate-x-1/2 items-center justify-center gap-1 overflow-x-auto rounded-xl border p-1 backdrop-blur-md transition-all duration-300 hover:shadow-md md:flex">
                     {navbarButtons.map((element, index) => {
                         const Icon = element.icon as LucideIcon | undefined;
                         const isActiveTab =
@@ -291,7 +279,7 @@ export default function NavbarCenter({
                                 <Button
                                     variant="ghost"
                                     className={cn(
-                                        "!text-primary/75 relative transition-all",
+                                        "!text-primary/75 relative rounded-lg transition-all",
                                         isActiveTab &&
                                             "fill-foreground !text-primary",
                                     )}
@@ -301,8 +289,9 @@ export default function NavbarCenter({
                                             size={20}
                                             strokeWidth={1.5}
                                             className={cn(
-                                                "text-muted-foreground",
-                                                isActiveTab && "text-primary",
+                                                "text-muted-foreground transition-all duration-300",
+                                                isActiveTab &&
+                                                    "text-primary stroke-3",
                                             )}
                                         />
                                     )}

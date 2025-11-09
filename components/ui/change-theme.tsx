@@ -14,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { capitalizeFirstLetter } from "@/lib/capitalize-first-letter";
 import { Skeleton } from "./skeleton";
+import { motion } from "motion/react";
 
 export function ModeToggle({
     variant,
@@ -40,7 +41,15 @@ export function ModeToggle({
     }, []);
 
     if (!mounted) {
-        return <Skeleton className="size-9 border" />;
+        return (
+            <motion.div
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+            >
+                <Skeleton className="size-9" />
+            </motion.div>
+        );
     }
 
     return (

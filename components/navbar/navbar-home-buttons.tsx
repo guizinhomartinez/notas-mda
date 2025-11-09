@@ -19,8 +19,8 @@ export default function NavbarHomeButton() {
                 >
                     <HomeIcon
                         className={cn(
-                            "text-foreground transition-all duration-300",
-                            pathname === "/" && "fill-primary",
+                            "text-muted-foreground",
+                            pathname === "/" && "!text-primary stroke-3",
                         )}
                     />
                 </Button>
