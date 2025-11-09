@@ -18,6 +18,7 @@ import { Skeleton } from "./skeleton";
 export function ModeToggle({
     variant,
     expandOnHover,
+    className,
 }: {
     variant?:
         | "outline"
@@ -29,6 +30,7 @@ export function ModeToggle({
         | null
         | undefined;
     expandOnHover?: boolean;
+    className?: string;
 }) {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = React.useState(false);
@@ -54,6 +56,7 @@ export function ModeToggle({
                             (theme !== "system"
                                 ? "hover:w-32"
                                 : "hover:!w-[7.5rem]"),
+                        className,
                     )}
                 >
                     <Sun
