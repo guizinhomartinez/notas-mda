@@ -6,17 +6,23 @@ import { HomeIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function NavbarLinks() {
+export default function NavbarHomeButton() {
     const pathname = usePathname();
 
     return (
         <div className="flex items-center gap-2">
             <Link href="/">
                 <Button
-                    variant="ghost"
+                    variant="outline"
                     className={cn("group", pathname === "/" && "bg-accent")}
+                    size="icon"
                 >
-                    <HomeIcon className={cn("group-hover:fill-primary transition-all duration-300", pathname === "/" && "fill-primary")} />
+                    <HomeIcon
+                        className={cn(
+                            "text-muted-foreground",
+                            pathname === "/" && "!text-primary stroke-3",
+                        )}
+                    />
                 </Button>
             </Link>
         </div>

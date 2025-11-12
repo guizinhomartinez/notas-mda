@@ -32,36 +32,26 @@ export default function Home() {
 
     return (
         <ScrollAreaDemo className="from-background h-dvh max-h-dvh w-screen bg-gradient-to-b to-zinc-400/5">
-            <div className="flex flex-col items-center justify-center gap-12 p-8 md:h-dvh md:gap-24">
+            <div className="flex h-dvh flex-col items-center justify-center gap-12 p-8">
                 <div className="flex flex-col items-center justify-center gap-3">
                     <h1 className="bg-gradient-to-b from-zinc-400 to-zinc-700 bg-clip-text text-center text-7xl font-bold text-transparent dark:bg-gradient-to-t dark:!from-transparent dark:to-zinc-400">
                         Notas do M.D.A.
                     </h1>
                 </div>
-                <div className="flex flex-col items-center justify-center gap-4">
-                    <div className="flex flex-col items-center justify-center gap-3">
-                        <Link href="/conteudo">
-                            <Button size="lg">Começar o processo.</Button>
-                        </Link>
-                        <Link href={`/notas/${formatDateUTC(dayRange)}`} className="w-full">
-                            <Button
-                                className="w-full"
-                                variant="secondary"
-                                size="lg"
-                            >
-                                Ver as notas de hoje
-                            </Button>
-                        </Link>
-                    </div>
-
-                    <div className="flex gap-3 pt-2">
-                        <Link href="/constituicao">
-                            <Button variant="link">Constituição.</Button>
-                        </Link>
-                        <Link href="/sobre">
-                            <Button variant="link">O que é o MDA?</Button>
-                        </Link>
-                    </div>
+                <div className="grid items-center justify-center gap-2 *:w-full">
+                    <Link href="/conteudo" className="w-full">
+                        <Button size="lg" className="w-full">
+                            Começar o processo.
+                        </Button>
+                    </Link>
+                    <Link
+                        href={`/notas/${formatDateUTC(dayRange)}`}
+                        className="w-full"
+                    >
+                        <Button className="w-full" variant="link" size="lg">
+                            Ver as notas de hoje
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </ScrollAreaDemo>
