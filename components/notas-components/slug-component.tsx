@@ -93,7 +93,7 @@ export default function SlugComponent({
     return (
         <>
             <div className="lg:bg-card/50 lg:border-border flex min-h-full min-w-full flex-col justify-center gap-7 rounded-xl border p-6 lg:min-h-0 lg:min-w-96">
-                <p className="text-center text-2xl font-bold tracking-tight">
+                <p className="tranlate-y-3 text-center text-2xl font-bold tracking-tight md:translate-y-0">
                     {formatDateUTC(date)}
                 </p>
                 {!ratingsAreNotAvailable ? (
