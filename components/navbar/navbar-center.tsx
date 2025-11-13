@@ -114,8 +114,8 @@ export default function NavbarCenter({
                                         <AlignRight />
                                     </Button>
                                 </DrawerTrigger>
-                                <DrawerContent className="w-full">
-                                    <DrawerFooter className="flex flex-row items-center justify-between gap-2 px-4 py-0 pt-3">
+                                <DrawerContent className="h-fit max-h-full pb-8">
+                                    <DrawerFooter className="mt-0 flex flex-row items-start justify-between gap-2 px-4 py-0 pt-3">
                                         <ModeToggle
                                             variant="ghost"
                                             className="rounded-full"
@@ -138,7 +138,7 @@ export default function NavbarCenter({
                                         </DrawerHeader>
                                     </VisuallyHidden.Root>
 
-                                    <div className="flex w-full flex-col gap-2 p-4">
+                                    <div className="flex w-full flex-col gap-2 p-4 pt-0">
                                         <div
                                             className="flex flex-col items-end justify-center py-2"
                                             onClick={(e) => e.preventDefault()}
