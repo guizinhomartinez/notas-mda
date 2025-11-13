@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { ScrollAreaDemo } from "@/components/vertical-scroll";
-import NewYearsFullscreenDialog from "@/components/year-recap/new-years-fullscreen-dialog";
 import { formatInTimeZone } from "date-fns-tz";
 import Link from "next/link";
 
@@ -31,13 +30,8 @@ export default async function Home() {
         return formatInTimeZone(date, "UTC", format);
     }
 
-    const newYearsEve =
-        getUTCDayRange(new Date(2025, 31, 12, 0, 0, 0, 0)) !==
-        getUTCDayRange(new Date());
-
     return (
         <>
-            <NewYearsFullscreenDialog />
             <ScrollAreaDemo className="from-background h-dvh max-h-dvh w-screen bg-gradient-to-b to-zinc-400/5">
                 <div className="flex h-dvh flex-col items-center justify-center gap-12 p-8">
                     <div className="flex flex-col items-center justify-center gap-3">
