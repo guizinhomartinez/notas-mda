@@ -98,7 +98,7 @@ export default function SlugComponent({
                 </p>
                 {!ratingsAreNotAvailable ? (
                     <>
-                        <ScrollAreaDemo className="bg-card mx-auto flex max-h-48 w-full max-w-96 flex-col items-center justify-center rounded-lg border">
+                        <ScrollAreaDemo className="bg-card mx-auto flex max-h-48 w-full max-w-96 flex-col items-center justify-center rounded-md border">
                             <div className="flex w-full flex-col">
                                 {userData.map((user, index) => (
                                     <div

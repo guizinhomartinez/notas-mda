@@ -1,4 +1,3 @@
-import NotFound from "@/components/notas-components/not-found";
 import SlugComponent from "@/components/notas-components/slug-component";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,7 +14,9 @@ import prisma from "@/lib/prisma";
 import { SignInButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { lazy, Suspense } from "react";
+
+const LazyComp = lazy(() => new Promise(() => {})); // Never resolves
 
 export interface SlugComponentInterface {
     userData: {
@@ -109,11 +110,11 @@ export default async function Notas({
                 <Suspense
                     key={`notas (${slug})`}
                     fallback={
-                        <div className="lg:bg-primary-foreground lg:border-border flex min-h-full min-w-full flex-col justify-center gap-7 rounded-xl border p-6 lg:min-h-0 lg:min-w-96">
+                        <div className="lg:bg-card/50 lg:border-border flex min-h-full min-w-full flex-col justify-center gap-7 rounded-xl border p-6 lg:min-h-0 lg:min-w-96">
                             <Skeleton className="mx-auto h-8 w-32" />
-                            <div className="bg-secondary/15 mx-auto flex max-h-48 w-full max-w-96 flex-col items-center justify-center rounded-lg border overflow-hidden">
+                            <div className="bg-card mx-auto flex max-h-48 w-full max-w-96 flex-col items-center justify-center overflow-hidden rounded-md border">
                                 <div className="flex w-full flex-col">
-                                    <Skeleton className="h-12 w-full rounded-none border-b border-b-primary/5" />
+                                    <Skeleton className="border-b-primary/5 h-12 w-full rounded-none border-b" />
                                     <Skeleton className="h-12 w-full rounded-none" />
                                 </div>
                             </div>
@@ -142,6 +143,7 @@ export default async function Notas({
                             userRated,
                         }}
                     />
+                    {/*<LazyComp />*/}
                 </Suspense>
             ) : (
                 <>
