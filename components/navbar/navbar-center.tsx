@@ -263,7 +263,7 @@ export default function NavbarCenter({
                     )}
                 </>
             ) : (
-                <div className="bg-primary-foreground/50 border-border absolute top-1 left-1/2 mx-auto hidden w-fit -translate-x-1/2 items-center justify-center gap-1 overflow-x-auto rounded-xl border p-1 backdrop-blur-md transition-all duration-300 hover:shadow-md md:flex">
+                <div className="bg-primary-foreground/50 dark:bg-background/50 border-border absolute top-1 left-1/2 mx-auto hidden w-fit -translate-x-1/2 items-center justify-center gap-1 overflow-x-auto rounded-xl border p-1 backdrop-blur-md transition-all duration-300 hover:shadow-sm md:flex">
                     {navbarButtons.map((element, index) => {
                         const Icon = element.icon as LucideIcon | undefined;
                         const isActiveTab =
@@ -279,7 +279,7 @@ export default function NavbarCenter({
                                 <Button
                                     variant="ghost"
                                     className={cn(
-                                        "!text-primary/75 relative rounded-lg transition-all",
+                                        "text-card-foreground/75 relative rounded-lg transition-all",
                                         isActiveTab &&
                                             "fill-foreground !text-primary",
                                     )}

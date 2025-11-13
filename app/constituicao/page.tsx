@@ -9,13 +9,13 @@ export default function Constituicao() {
                 <h1 className="text-center text-5xl font-bold md:text-7xl">
                     Constituição
                 </h1>
-                <p className="text-primary/75 text-md text-center md:text-lg">
+                <p className="text-card-foreground/75 text-md text-center md:text-lg">
                     Aqui é possivel analisar a constituição do sagrado e
                     próspero M.D.A.
                     <strong> Qualquer</strong> regra infringida por um dos
                     membros levará a decapitação <strong>imediata.</strong>
                 </p>
-                <p className="text-primary/90 font-bold italic">
+                <p className="text-card-foreground/75 font-bold italic">
                     (Mulher, Diário e Avanço)
                 </p>
             </div>
@@ -39,7 +39,7 @@ export default function Constituicao() {
                     <p>
                         <strong>Art. 2º </strong>O lema supremo do M.D.A. é:
                     </p>
-                    <p className="border-border text-primary/90 mb-2 border-l-3 pl-4 italic">
+                    <p className="border-border text-card-foreground/75 mb-2 border-l-3 pl-4 italic">
                         “Ser o mais viado possível, com brilho, com dor e com
                         orgulho.”
                     </p>

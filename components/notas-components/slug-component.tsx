@@ -92,13 +92,13 @@ export default function SlugComponent({
 
     return (
         <>
-            <div className="lg:bg-primary-foreground lg:border-border flex min-h-full min-w-full flex-col justify-center gap-7 rounded-xl border p-6 lg:min-h-0 lg:min-w-96">
+            <div className="lg:bg-card/50 lg:border-border flex min-h-full min-w-full flex-col justify-center gap-7 rounded-xl border p-6 lg:min-h-0 lg:min-w-96">
                 <p className="text-center text-2xl font-bold tracking-tight">
                     {formatDateUTC(date)}
                 </p>
                 {!ratingsAreNotAvailable ? (
                     <>
-                        <ScrollAreaDemo className="bg-secondary/15 mx-auto flex max-h-48 w-full max-w-96 flex-col items-center justify-center rounded-lg border">
+                        <ScrollAreaDemo className="bg-card mx-auto flex max-h-48 w-full max-w-96 flex-col items-center justify-center rounded-lg border">
                             <div className="flex w-full flex-col">
                                 {userData.map((user, index) => (
                                     <div
@@ -169,7 +169,7 @@ export default function SlugComponent({
                             </div>
                         </ScrollAreaDemo>
 
-                        <p className="text-primary/80 -mt-3 text-center text-lg">
+                        <p className="text-card-foreground/80 -mt-3 text-center text-lg">
                             Média do dia: {average}
                         </p>
                     </>
