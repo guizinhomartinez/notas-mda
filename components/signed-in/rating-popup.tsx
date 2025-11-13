@@ -140,7 +140,11 @@ export default function RatingPopup({
                     <Content />
                     <DrawerFooter className="mb-4">
                         <Confirmar />
-                        <DrawerClose className="w-full" asChild>
+                        <DrawerClose
+                            className="w-full"
+                            asChild
+                            onClick={() => setOpenEditMenu(false)}
+                        >
                             <Button variant="outline" className="w-full p-3">
                                 Cancelar
                             </Button>
