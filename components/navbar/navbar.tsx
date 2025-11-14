@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs/server";
 import NavbarHomeButton from "@/components/navbar/navbar-home-buttons";
 import NavbarCenter from "@/components/navbar/navbar-center";
-import { getUsernameByUserId } from "@/functions/clerk-handling";
+import { getUsernameByUserId } from "@/backend-actions/clerk-handling";
 import ClerkProfilePicture from "./clerk-profile-picture";
 
 function getUTCDayRange(date: Date) {

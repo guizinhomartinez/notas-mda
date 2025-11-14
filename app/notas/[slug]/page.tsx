@@ -1,15 +1,15 @@
-import SlugComponent from "@/components/notas-components/slug-component";
+import UserRatingsDisplay from "@/components/notas-components/user-ratings-display";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
     getProfilePhotoByUserId,
     getUsernameByUserId,
-} from "@/functions/clerk-handling";
+} from "@/backend-actions/clerk-handling";
 import {
     checkAllRatings,
     checkUserRating,
     getDayAverage,
-} from "@/functions/handle-rating-submit";
+} from "@/backend-actions/handle-rating-submit";
 import prisma from "@/lib/prisma";
 import { SignInButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
@@ -18,7 +18,7 @@ import { lazy, Suspense } from "react";
 
 const LazyComp = lazy(() => new Promise(() => {})); // Never resolves
 
-export interface SlugComponentInterface {
+export interface UserRatingsDisplayInterface {
     userData: {
         userId: string;
         username: string | null;
@@ -125,7 +125,7 @@ export default async function Notas({
                         </div>
                     }
                 >
-                    <SlugComponent
+                    <UserRatingsDisplay
                         {...{
                             userData,
                             userId,
