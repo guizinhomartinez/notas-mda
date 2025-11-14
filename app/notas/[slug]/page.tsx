@@ -15,6 +15,7 @@ import { SignInButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 import { lazy, Suspense } from "react";
+import SignInPrompt from "@/components/conteudo-components/not-signed-in/sign-in";
 
 const LazyComp = lazy(() => new Promise(() => {})); // Never resolves
 
@@ -147,17 +148,10 @@ export default async function Notas({
                 </Suspense>
             ) : (
                 <>
-                    <p className="text-center">
-                        Você não está logado. Entre em uma conta ou vá embora.
-                    </p>
-                    <Button className="p-5" asChild>
-                        <SignInButton
-                            fallbackRedirectUrl={`/notas/${slug}`}
-                            signUpFallbackRedirectUrl={`/notas/${slug}`}
-                        >
-                            Log-in
-                        </SignInButton>
-                    </Button>
+                    <SignInPrompt
+                        fallbackRedirectUrl={`/notas/${slug}`}
+                        signUpFallbackRedirectUrl={`/notas/${slug}`}
+                    />
                 </>
             )}
         </div>
