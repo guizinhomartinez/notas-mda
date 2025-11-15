@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
-import RatingPopup from "@/components/signed-in/rating-popup";
+import RatingEditor from "@/components/ui/rating-components/rating-editor";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-export default function EditRatingUI({
+export default function RatingSuccessDisplay({
     ratedValue,
     firstValue,
     secondValue,
@@ -40,7 +40,7 @@ export default function EditRatingUI({
                 Sua nota hoje foi {ratedValue ?? `${firstValue}.${secondValue}`}
             </p>
             <div className="flex gap-2 *:flex-grow">
-                <RatingPopup
+                <RatingEditor
                     {...{
                         editRatingButton,
                         newValues,

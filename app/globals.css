@@ -203,3 +203,7 @@ body {
         @apply bg-background text-card-foreground;
     }
 }
+
+a {
+    cursor: default !important;
+}

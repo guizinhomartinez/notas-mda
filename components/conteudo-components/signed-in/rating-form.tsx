@@ -1,8 +1,8 @@
-import type { WheelPickerOption } from "@/components/wheel-picker";
-import { WheelPicker, WheelPickerWrapper } from "@/components/wheel-picker";
+import type { WheelPickerOption } from "@/components/ui/rating-components/wheel-picker";
+import { WheelPicker, WheelPickerWrapper } from "@/components/ui/rating-components/wheel-picker";
 import { Dot } from "lucide-react";
-import { Button } from "../ui/button";
-import { Spinner } from "../ui/spinner";
+import { Button } from "../../ui/button";
+import { Spinner } from "../../ui/spinner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Dispatch, SetStateAction } from "react";
 import { AnimatePresence, motion } from "motion/react";

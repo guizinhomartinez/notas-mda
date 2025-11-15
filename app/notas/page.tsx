@@ -1,5 +1,5 @@
-import CalendarioPageContent from "@/components/notas-components/calendario-page-content";
-import { ScrollAreaDemo } from "@/components/vertical-scroll";
+import CalendarView from "@/components/notas-components/calendar-view";
+import { ScrollAreaDemo } from "@/components/ui/vertical-scroll";
 
 export default async function NotasCalendario() {
     const date = new Date();
@@ -10,7 +10,7 @@ export default async function NotasCalendario() {
 
     return (
         <ScrollAreaDemo className="from-background flex h-dvh w-screen items-center gap-4 bg-gradient-to-b to-zinc-400/5 lg:mx-auto">
-            <CalendarioPageContent date={date} />
+            <CalendarView date={date} />
         </ScrollAreaDemo>
     );
 }

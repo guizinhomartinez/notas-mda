@@ -7,7 +7,7 @@ import { Dispatch, SetStateAction } from "react";
 import { DayButtonProps } from "react-day-picker";
 import { ptBR } from "react-day-picker/locale";
 
-export default function CalendarNotas({
+export default function CalendarWithRatings({
     month,
     textStr,
     date,

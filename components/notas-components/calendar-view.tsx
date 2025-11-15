@@ -1,6 +1,6 @@
 "use client";
 
-import CalendarNotas from "@/components/notas-components/calendar";
+import CalendarNotas from "@/components/notas-components/calendar-with-ratings";
 import { motion } from "motion/react";
 import { useState } from "react";
 
@@ -20,7 +20,7 @@ const tabTypes: tabTypesInterface[] = [
     },
 ];
 
-export default function CalendarioPageContent({ date }: { date: Date }) {
+export default function CalendarView({ date }: { date: Date }) {
     const [tab, setTab] = useState<"month" | "week">("month");
 
     const [dateState, setDateState] = useState<Date>(date);

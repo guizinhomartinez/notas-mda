@@ -1,6 +1,6 @@
 import ExplanationPages from "@/components/explanation-pages";
 import { Separator } from "@/components/ui/separator";
-import { ScrollAreaDemo } from "@/components/vertical-scroll";
+import { ScrollAreaDemo } from "@/components/ui/vertical-scroll";
 
 export default function Constituicao() {
     return (

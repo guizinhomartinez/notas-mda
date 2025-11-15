@@ -4,13 +4,13 @@ import {
     checkUserRating,
     sendRating,
     editRating,
-} from "@/functions/handle-rating-submit";
+} from "@/backend-actions/handle-rating-submit";
 import { useEffect, useState } from "react";
 import RatingForm from "./rating-form";
-import { Spinner } from "../ui/spinner";
-import EditRatingUI from "./edit-rating";
+import { Spinner } from "../../ui/spinner";
+import RatingSuccessDisplay from "./rating-success-display";
 
-export default function RatingInterface({
+export default function RatingComponent({
     userId,
     date,
 }: {
@@ -94,7 +94,7 @@ export default function RatingInterface({
                                 }}
                             />
                         ) : (
-                            <EditRatingUI
+                            <RatingSuccessDisplay
                                 {...{
                                     editRatingButton,
                                     firstValue,

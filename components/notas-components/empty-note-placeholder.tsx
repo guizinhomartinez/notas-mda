@@ -8,13 +8,13 @@ import {
     EmptyMedia,
     EmptyTitle,
 } from "@/components/ui/empty";
-import RatingPopup from "@/components/signed-in/rating-popup";
+import RatingEditor from "@/components/ui/rating-components/rating-editor";
 import { CircleDashed } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dispatch, SetStateAction, useState } from "react";
-import { editRating } from "@/functions/handle-rating-submit";
+import { editRating } from "@/backend-actions/handle-rating-submit";
 
-export default function EmptyNota({
+export default function EmptyNotePlaceholder({
     username,
     userId,
     editRatingButton,
@@ -43,7 +43,7 @@ export default function EmptyNota({
                 <EmptyDescription>Adicione ou vá embora.</EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
-                <RatingPopup
+                <RatingEditor
                     {...{
                         editRatingButton,
                         newValues,
@@ -54,7 +54,7 @@ export default function EmptyNota({
                     actionType="add"
                 >
                     <Button size="lg">Adicionar nota</Button>
-                </RatingPopup>
+                </RatingEditor>
             </EmptyContent>
         </Empty>
     );

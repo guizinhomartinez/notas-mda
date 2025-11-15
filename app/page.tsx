@@ -1,7 +1,7 @@
 "use server";
 
 import { Button } from "@/components/ui/button";
-import { ScrollAreaDemo } from "@/components/vertical-scroll";
+import { ScrollAreaDemo } from "@/components/ui/vertical-scroll";
 import { formatInTimeZone } from "date-fns-tz";
 import Link from "next/link";
 
