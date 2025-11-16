@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ScrollAreaDemo } from "./vertical-scroll";
+import { ScrollAreaDemo } from "./ui/vertical-scroll";
 
 export default function ExplanationPages({
     children,

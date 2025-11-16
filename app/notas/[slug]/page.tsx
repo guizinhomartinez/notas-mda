@@ -1,24 +1,25 @@
-import SlugComponent from "@/components/notas-components/slug-component";
+import UserRatingsDisplay from "@/components/notas-components/user-ratings-display";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
     getProfilePhotoByUserId,
     getUsernameByUserId,
-} from "@/functions/clerk-handling";
+} from "@/backend-actions/clerk-handling";
 import {
     checkAllRatings,
     checkUserRating,
     getDayAverage,
-} from "@/functions/handle-rating-submit";
+} from "@/backend-actions/handle-rating-submit";
 import prisma from "@/lib/prisma";
 import { SignInButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 import { lazy, Suspense } from "react";
+import SignInPrompt from "@/components/conteudo-components/not-signed-in/sign-in";
 
 const LazyComp = lazy(() => new Promise(() => {})); // Never resolves
 
-export interface SlugComponentInterface {
+export interface UserRatingsDisplayInterface {
     userData: {
         userId: string;
         username: string | null;
@@ -125,7 +126,7 @@ export default async function Notas({
                         </div>
                     }
                 >
-                    <SlugComponent
+                    <UserRatingsDisplay
                         {...{
                             userData,
                             userId,
@@ -147,17 +148,10 @@ export default async function Notas({
                 </Suspense>
             ) : (
                 <>
-                    <p className="text-center">
-                        Você não está logado. Entre em uma conta ou vá embora.
-                    </p>
-                    <Button className="p-5" asChild>
-                        <SignInButton
-                            fallbackRedirectUrl={`/notas/${slug}`}
-                            signUpFallbackRedirectUrl={`/notas/${slug}`}
-                        >
-                            Log-in
-                        </SignInButton>
-                    </Button>
+                    <SignInPrompt
+                        fallbackRedirectUrl={`/notas/${slug}`}
+                        signUpFallbackRedirectUrl={`/notas/${slug}`}
+                    />
                 </>
             )}
         </div>

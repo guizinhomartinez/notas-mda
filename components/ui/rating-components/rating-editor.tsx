@@ -8,10 +8,10 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { WheelPicker, WheelPickerWrapper } from "../wheel-picker";
+import { WheelPicker, WheelPickerWrapper } from "./wheel-picker";
 import { Dot } from "lucide-react";
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import { createArray } from "@/components/signed-in/rating-form";
+import { createArray } from "@/components/conteudo-components/signed-in/rating-form";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Spinner } from "@/components/ui/spinner";
 import {
@@ -30,7 +30,7 @@ import { AnimatePresence, motion } from "motion/react";
 const number = createArray(11);
 const number2 = createArray(10);
 
-export default function RatingPopup({
+export default function RatingEditor({
     openEditMenu,
     newValues,
     setNewValues,

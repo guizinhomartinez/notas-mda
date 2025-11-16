@@ -1,23 +1,23 @@
 "use client";
 
-import { SlugComponentInterface } from "@/app/notas/[slug]/page";
-import EmptyNota from "@/components/notas-components/empty-nota";
-import RatingPopup from "@/components/signed-in/rating-popup";
+import EmptyNotePlaceholder from "@/components/notas-components/empty-note-placeholder";
+import RatingEditor from "@/components/ui/rating-components/rating-editor";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
-import { ScrollAreaDemo } from "@/components/vertical-scroll";
+import { ScrollAreaDemo } from "@/components/ui/vertical-scroll";
 import {
     editRatingOfSpecificDay,
     sendRatingOfSpecifcDay,
-} from "@/functions/handle-rating-submit";
+} from "@/backend-actions/handle-rating-submit";
 import { ChevronLeft, ChevronRight, Edit } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { formatInTimeZone } from "date-fns-tz";
+import { UserRatingsDisplayInterface } from "@/app/notas/[slug]/page";
 
-export default function SlugComponent({
+export default function UserRatingsDisplay({
     userData,
     correctedDate,
     userId,
@@ -30,7 +30,7 @@ export default function SlugComponent({
     nextActualDate,
     slug,
     userRated,
-}: SlugComponentInterface) {
+}: UserRatingsDisplayInterface) {
     const date = new Date(correctedDate);
     const prev = new Date(previousDay);
     const next = new Date(nextDay);
@@ -127,7 +127,7 @@ export default function SlugComponent({
                                             </div>
                                             <div className="flex items-center justify-center gap-2">
                                                 {user.userId === userId ? (
-                                                    <RatingPopup
+                                                    <RatingEditor
                                                         {...{
                                                             newValues,
                                                             openEditMenu,
@@ -152,7 +152,7 @@ export default function SlugComponent({
                                                             )}
                                                             <Edit />
                                                         </Button>
-                                                    </RatingPopup>
+                                                    </RatingEditor>
                                                 ) : (
                                                     <div className="flex h-8 items-center justify-center px-2.5 font-mono text-sm">
                                                         <p>{user.rating}</p>
@@ -175,7 +175,7 @@ export default function SlugComponent({
                     </>
                 ) : (
                     <>
-                        <EmptyNota
+                        <EmptyNotePlaceholder
                             {...{
                                 username,
                                 userId,
@@ -192,7 +192,7 @@ export default function SlugComponent({
                 <div className="absolute bottom-4 left-1/2 w-[calc(100vw-3rem)] -translate-x-1/2 md:w-[calc(50vw)] lg:relative lg:bottom-0 lg:left-0 lg:w-full lg:translate-x-0">
                     <div className="flex flex-col items-center justify-center gap-3 *:flex-grow">
                         {!userRated && (
-                            <RatingPopup
+                            <RatingEditor
                                 {...{
                                     openEditMenu,
                                     setOpenEditMenu,
@@ -208,7 +208,7 @@ export default function SlugComponent({
                                 <Button className="w-full">
                                     Adicionar nota
                                 </Button>
-                            </RatingPopup>
+                            </RatingEditor>
                         )}
                         <div className="flex w-full items-center justify-center gap-2">
                             <Link

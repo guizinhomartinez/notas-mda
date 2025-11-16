@@ -19,11 +19,9 @@ import {
     CalendarCheck,
     Info,
     LucideIcon,
-    Moon,
     NotebookPen,
     Scroll,
     SettingsIcon,
-    Sun,
     X,
 } from "lucide-react";
 import { formatInTimeZone } from "date-fns-tz";
@@ -33,7 +31,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { SignInButton, UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "@/components/ui/change-theme";
 import { Separator } from "@/components/ui/separator";
-import { useTheme } from "next-themes";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface navbarButtonsType {
@@ -42,7 +39,7 @@ interface navbarButtonsType {
     icon?: LucideIcon;
 }
 
-export default function NavbarCenter({
+export default function DynamicNavbarOptions({
     date,
     isAuthenticated,
     username,
